@@ -15,11 +15,7 @@ void setup() {
 }
 
 void loop() {
-   //Serial.println(antares.createDevice(projectName,"test3"));
    Serial.println(antares.retrieveAllDevice(projectName));
-   //Serial.println(antares.storeData(projectName, "test1", (String)random(50,100), "Celcius"));
-   //Serial.println(antares.retrieveAllData(projectName, deviceName));
-   //Serial.println(antares.retrieveLatestData(projectName, deviceName));
    delay(10000);
 }
 
