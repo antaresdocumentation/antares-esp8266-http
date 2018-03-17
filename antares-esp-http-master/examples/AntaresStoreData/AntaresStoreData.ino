@@ -16,8 +16,16 @@ void setup() {
 }
 
 void loop() {
-   Serial.println(antares.storeData(projectName, deviceName, (String)random(50,100), "Celcius"));
+   int sizeData = 2; 
+   String dataName[sizeData],dataValue[sizeData];
+   dataName[0]= "Temperature";
+   dataName[1]= "Humidity";
+
+   dataValue[0]= (String)random(50,100);
+   dataValue[1]= (String)random(50,100);
+   Serial.println(antares.storeData(projectName, deviceName, dataName, dataValue,sizeData));
    delay(10000);
+   
 }
 
  

@@ -15,12 +15,12 @@ class Antares
       Antares(String accessKey);
       String createDevice(String projectName, String deviceName);
       String retrieveAllDevice(String projectName,int limit=0);
-      String storeData(String projectName, String deviceName, String value, String unit);
+      String storeData(String projectName, String deviceName, String nameData[], String valueData[], int sizeParameter);
       String retrieveAllData(String projectName, String deviceName,int limit=0);
       String retrieveLatestData(String projectName, String deviceName);
       bool wifiConnection(char *ssid, char *pass);
       void setDebug(bool trueFalse);
-      
+
     private:
       void printDebug(String text);
       String ipToString(IPAddress ip);

@@ -7,7 +7,7 @@ Antares::Antares(String accessKey) {
 String Antares::createDevice(String projectName, String deviceName){
 	HTTPClient http;
 	printDebug("\n[ANTARES] CONNECT TO "+(String)SERVER+"...\n");
-	http.begin((String)SERVER+":" + (String)PORT + "/~/in-cse/in-name/"+projectName); //HTTP
+	http.begin((String)SERVER+":" + (String)PORT + "/~/antares-cse/antares-id/"+projectName); //HTTP
   http.addHeader("Content-Type", "application/json;ty=3");
   http.addHeader("X-M2M-Origin", _accessKey);
 	String body="{\"m2m:cnt\": {\"rn\": \""+deviceName+"\"}}";
@@ -28,11 +28,11 @@ String Antares::createDevice(String projectName, String deviceName){
       {
         printDebug("[ANTARES] Error\n");
       }
-	} 
+	}
 	else {
 			printDebug("[ANTARES] POST... failed, error: "+(String)http.errorToString(httpCode).c_str()+"\n");
 	}
-  
+
 	http.end();
   return (String)httpCode;
 }
@@ -41,8 +41,8 @@ String Antares::retrieveAllDevice(String projectName,int limit){
 	HTTPClient http;
 	printDebug("\n[ANTARES] CONNECT TO "+(String)SERVER+"...\n");
   String Limit="";
-  if (limit!=0) Limit = "&lim="+(String)limit; 
-	http.begin((String)SERVER+":" + (String)PORT + "/~/in-cse/in-name/"+projectName+"?fu=1&ty=3"+Limit); //HTTP
+  if (limit!=0) Limit = "&lim="+(String)limit;
+	http.begin((String)SERVER+":" + (String)PORT + "/~/antares-cse/antares-id/"+projectName+"?fu=1&ty=3"+Limit); //HTTP
 	http.addHeader("Content-Type", "application/json;ty=3");
 	http.addHeader("X-M2M-Origin", _accessKey);
 	printDebug("[ANTARES] GET...\n");
@@ -54,7 +54,7 @@ String Antares::retrieveAllDevice(String projectName,int limit){
           printDebug(payload);
           JsonObject& payloadJson = jsonBuffer.parseObject(payload);
           payload = payloadJson["m2m:uril"].as<String>();
-          payload.replace("/in-cse/in-name/"+projectName+"/","");
+          payload.replace("/antares-cse/antares-id/"+projectName+"/","");
           payload.replace(" ",",");
           printDebug(payload+"\n");
           return payload;
@@ -66,14 +66,18 @@ String Antares::retrieveAllDevice(String projectName,int limit){
   return "[ANTARES] Error";
 }
 
-String Antares::storeData(String projectName, String deviceName, String value, String unit){
+String Antares::storeData(String projectName, String deviceName, String nameData[], String valueData[], int sizeParameter){
 	HTTPClient http;
-	printDebug("\n[ANTARES] CONNECT TO "+(String)SERVER+"...\n");
-  http.begin((String)SERVER+":" + (String)PORT + "/~/in-cse/in-name/"+projectName+"/"+deviceName); //HTTP
+  String Uri = (String)SERVER+":" + (String)PORT + "/~/antares-cse/antares-id/"+projectName+"/"+deviceName;
+	printDebug("\n[ANTARES] CONNECT TO "+Uri+"...\n");
+  http.begin(Uri); //HTTP
   http.addHeader("Content-Type", "application/xml;ty=4");
   http.addHeader("X-M2M-Origin", _accessKey);
-  String body="<m2m:cin xmlns:m2m=\"http://www.onem2m.org/xml/protocols\"><cnf>message</cnf>";
-    body += "<con>&lt;obj&gt;&lt;int name=\"data\" val=\""+value+"\"/&gt;&lt;int name=\"unit\" val=\""+unit+"\"/&gt;&lt;/obj&gt;</con></m2m:cin>\n";
+  String body="<m2m:cin xmlns:m2m=\"http://www.onem2m.org/xml/protocols\"><cnf>message</cnf><con>&lt;obj&gt;";
+  for (int i=0; i<sizeParameter; i++)
+    body += "&lt;int name=\""+nameData[i]+"\" val=\""+valueData[i]+"\"/&gt;";
+  body += "&lt;/obj&gt;</con></m2m:cin>\n";
+
   printDebug("[ANTARES] POST...\n");
   printDebug("[ANTARES] " + body +"\n");
 	int httpCode = http.POST(body);
@@ -94,8 +98,8 @@ String Antares::retrieveAllData(String projectName, String deviceName,int limit)
   HTTPClient http;
   printDebug("\n[ANTARES] CONNECT TO "+(String)SERVER+"...\n");
   String Limit="";
-  if (limit!=0) Limit = "&lim="+(String)limit; 
-  http.begin((String)SERVER+":" + (String)PORT + "/~/in-cse/in-name/"+projectName+"/"+deviceName+"?fu=1&ty=4"+Limit); //HTTP
+  if (limit!=0) Limit = "&lim="+(String)limit;
+  http.begin((String)SERVER+":" + (String)PORT + "/~/antares-cse/antares-id/"+projectName+"/"+deviceName+"?fu=1&ty=4"+Limit); //HTTP
   http.addHeader("Content-Type", "application/json");
   http.addHeader("X-M2M-Origin", _accessKey);
   printDebug("[ANTARES] GET...\n");
@@ -107,7 +111,7 @@ String Antares::retrieveAllData(String projectName, String deviceName,int limit)
           printDebug(payload);
           JsonObject& payloadJson = jsonBuffer.parseObject(payload);
           payload = payloadJson["m2m:uril"].as<String>();
-          payload.replace("/in-cse/in-name/"+projectName+"/"+deviceName+"/","");
+          payload.replace("/antares-cse/antares-id/"+projectName+"/"+deviceName+"/","");
           payload.replace(" ",",");
           printDebug(payload+"\n");
           return payload;
@@ -122,8 +126,8 @@ String Antares::retrieveAllData(String projectName, String deviceName,int limit)
 String Antares::retrieveLatestData(String projectName, String deviceName){
   HTTPClient http;
   printDebug("\n[ANTARES] CONNECT TO "+(String)SERVER+"...\n");
- 
-  http.begin((String)SERVER+":" + (String)PORT + "/~/in-cse/in-name/"+projectName+"/"+deviceName+"/la"); //HTTP
+
+  http.begin((String)SERVER+":" + (String)PORT + "/~/antares-cse/antares-id/"+projectName+"/"+deviceName+"/la"); //HTTP
   http.addHeader("Content-Type", "application/json");
   http.addHeader("X-M2M-Origin", _accessKey);
   printDebug("[ANTARES] GET...\n");
@@ -156,7 +160,7 @@ bool Antares::wifiConnection(char* ssid, char* pass) {
           ESP.reset();
         }
     }
-    
+
     WiFi.setAutoReconnect(true);
     printDebug("\n[ANTARES] WIFI CONNECTED\n");
     printDebug("[ANTARES] IP ADDRESS: ");
@@ -180,4 +184,3 @@ String Antares::ipToString(IPAddress ip){
     s += i  ? "." + String(ip[i]) : String(ip[i]);
   return s;
 }
-
