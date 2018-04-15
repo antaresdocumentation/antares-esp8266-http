@@ -73,10 +73,14 @@ String Antares::storeData(String projectName, String deviceName, String nameData
   http.begin(Uri); //HTTP
   http.addHeader("Content-Type", "application/xml;ty=4");
   http.addHeader("X-M2M-Origin", _accessKey);
-  String body="<m2m:cin xmlns:m2m=\"http://www.onem2m.org/xml/protocols\"><cnf>message</cnf><con>&lt;obj&gt;";
+  String body="<m2m:cin xmlns:m2m=\"http://www.onem2m.org/xml/protocols\"><cnf>message</cnf><con>{";
   for (int i=0; i<sizeParameter; i++)
-    body += "&lt;int name=\""+nameData[i]+"\" val=\""+valueData[i]+"\"/&gt;";
-  body += "&lt;/obj&gt;</con></m2m:cin>\n";
+  {
+    body += "\""+nameData[i]+"\":\""+valueData[i]+"\"";
+    if (i != (sizeParameter-1))
+      body += ",";
+  }
+  body += "}</con></m2m:cin>\n";
 
   printDebug("[ANTARES] POST...\n");
   printDebug("[ANTARES] " + body +"\n");
