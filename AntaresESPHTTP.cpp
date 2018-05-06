@@ -150,27 +150,43 @@ String Antares::retrieveLatestData(String projectName, String deviceName){
   return "[ANTARES] Error";
 }
 
-bool Antares::wifiConnection(char* ssid, char* pass) {
+bool Antares::wifiConnection(char* SSID, char* wifiPassword) {
     int count=0;
-    WiFi.begin(ssid, pass);
+    _wifiSSID = SSID;
+    _wifiPass = wifiPassword;
+
+    WiFi.begin(_wifiSSID, _wifiPass);
     printDebug("\n[ANTARES] WIFI CONNECTING");
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        printDebug(".");
-        count++;
-        if (count>=20)
-        {
-          printDebug("[ANTARES] Cannot Connect " + (String) ssid);
-          ESP.reset();
-        }
+
+    for (count=0;count<20;count++)
+    {
+      delay(500);
+      printDebug(".");
     }
 
-    WiFi.setAutoReconnect(true);
-    printDebug("\n[ANTARES] WIFI CONNECTED\n");
-    printDebug("[ANTARES] IP ADDRESS: ");
-    printDebug(ipToString(WiFi.localIP()));
-    printDebug("\n");
-    return true;
+    if (WiFi.status() != WL_CONNECTED)
+    {
+      printDebug("[ANTARES] Cannot Connect " + (String) _wifiSSID);
+      return false;
+    }
+    else
+    {
+      WiFi.setAutoReconnect(true);
+      printDebug("\n[ANTARES] WIFI CONNECTED\n");
+      printDebug("[ANTARES] IP ADDRESS: ");
+      printDebug(ipToString(WiFi.localIP()));
+      printDebug("\n");
+      return true;
+    }
+
+}
+
+bool Antares::checkWifiConnection()
+{
+  if (WiFi.status() != WL_CONNECTED) {
+    printDebug("[ANTARES] WIFI RECONNECT...");
+    return wifiConnection(_wifiSSID, _wifiPass);
+  }
 }
 
 void Antares::setDebug(bool trueFalse){
