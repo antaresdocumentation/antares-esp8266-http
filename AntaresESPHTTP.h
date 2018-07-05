@@ -7,12 +7,13 @@
 #include <ArduinoJson.h>
 
 #define SERVER "http://platform.antares.id"
-#define PORT 8080
+#define PORT "8080"
 
 class Antares
 {
     public:
-      Antares(String accessKey);
+      Antares(String accessKey,String server, String port);
+      // Antares(String accessKey);
       String createDevice(String projectName, String deviceName);
       String retrieveAllDevice(String projectName,int limit=0);
       String storeData(String projectName, String deviceName, String nameData[], String valueData[], int sizeParameter);
@@ -26,6 +27,8 @@ class Antares
       void printDebug(String text);
       String ipToString(IPAddress ip);
       String _accessKey;
+      String _server = SERVER;
+      String _port = PORT;
       char* _wifiSSID;
       char* _wifiPass;
       bool _debug=false;

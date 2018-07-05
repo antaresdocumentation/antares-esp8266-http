@@ -1,13 +1,15 @@
 #include "AntaresESPHTTP.h"
 
-Antares::Antares(String accessKey) {
+Antares::Antares(String accessKey,String server="12312", String port="asdasdsad") {
     _accessKey = accessKey;
+    _server = server;
+    _port = port;
 }
 
 String Antares::createDevice(String projectName, String deviceName){
 	HTTPClient http;
-	printDebug("\n[ANTARES] CONNECT TO "+(String)SERVER+"...\n");
-	http.begin((String)SERVER+":" + (String)PORT + "/~/antares-cse/antares-id/"+projectName); //HTTP
+	printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
+	http.begin(_server+":" + _port+ "/~/antares-cse/antares-id/"+projectName); //HTTP
   http.addHeader("Content-Type", "application/json;ty=3");
   http.addHeader("X-M2M-Origin", _accessKey);
 	String body="{\"m2m:cnt\": {\"rn\": \""+deviceName+"\"}}";
@@ -39,10 +41,10 @@ String Antares::createDevice(String projectName, String deviceName){
 
 String Antares::retrieveAllDevice(String projectName,int limit){
 	HTTPClient http;
-	printDebug("\n[ANTARES] CONNECT TO "+(String)SERVER+"...\n");
+	printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
   String Limit="";
   if (limit!=0) Limit = "&lim="+(String)limit;
-	http.begin((String)SERVER+":" + (String)PORT + "/~/antares-cse/antares-id/"+projectName+"?fu=1&ty=3"+Limit); //HTTP
+	http.begin(_server+":" + _port + "/~/antares-cse/antares-id/"+projectName+"?fu=1&ty=3"+Limit); //HTTP
 	http.addHeader("Content-Type", "application/json;ty=3");
 	http.addHeader("X-M2M-Origin", _accessKey);
 	printDebug("[ANTARES] GET...\n");
@@ -68,7 +70,7 @@ String Antares::retrieveAllDevice(String projectName,int limit){
 
 String Antares::storeData(String projectName, String deviceName, String nameData[], String valueData[], int sizeParameter){
 	HTTPClient http;
-  String Uri = (String)SERVER+":" + (String)PORT + "/~/antares-cse/antares-id/"+projectName+"/"+deviceName;
+  String Uri = _server+":" + _port + "/~/antares-cse/antares-id/"+projectName+"/"+deviceName;
 	printDebug("\n[ANTARES] CONNECT TO "+Uri+"...\n");
   http.begin(Uri); //HTTP
   http.addHeader("Content-Type", "application/xml;ty=4");
@@ -100,10 +102,10 @@ String Antares::storeData(String projectName, String deviceName, String nameData
 
 String Antares::retrieveAllData(String projectName, String deviceName,int limit){
   HTTPClient http;
-  printDebug("\n[ANTARES] CONNECT TO "+(String)SERVER+"...\n");
+  printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
   String Limit="";
   if (limit!=0) Limit = "&lim="+(String)limit;
-  http.begin((String)SERVER+":" + (String)PORT + "/~/antares-cse/antares-id/"+projectName+"/"+deviceName+"?fu=1&ty=4"+Limit); //HTTP
+  http.begin(_server+":" + _port + "/~/antares-cse/antares-id/"+projectName+"/"+deviceName+"?fu=1&ty=4"+Limit); //HTTP
   http.addHeader("Content-Type", "application/json");
   http.addHeader("X-M2M-Origin", _accessKey);
   printDebug("[ANTARES] GET...\n");
@@ -129,9 +131,9 @@ String Antares::retrieveAllData(String projectName, String deviceName,int limit)
 
 String Antares::retrieveLatestData(String projectName, String deviceName){
   HTTPClient http;
-  printDebug("\n[ANTARES] CONNECT TO "+(String)SERVER+"...\n");
+  printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
 
-  http.begin((String)SERVER+":" + (String)PORT + "/~/antares-cse/antares-id/"+projectName+"/"+deviceName+"/la"); //HTTP
+  http.begin(_server+":" + _port + "/~/antares-cse/antares-id/"+projectName+"/"+deviceName+"/la"); //HTTP
   http.addHeader("Content-Type", "application/json");
   http.addHeader("X-M2M-Origin", _accessKey);
   printDebug("[ANTARES] GET...\n");
