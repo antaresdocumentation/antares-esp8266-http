@@ -6,13 +6,10 @@
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 
-#define SERVER "http://platform.antares.id"
-#define PORT "8080"
-
 class Antares
 {
     public:
-      Antares(String accessKey,String server, String port);
+      Antares(String accessKey);
       // Antares(String accessKey);
       String createDevice(String projectName, String deviceName);
       String retrieveAllDevice(String projectName,int limit=0);
@@ -22,13 +19,18 @@ class Antares
       bool wifiConnection(char* SSID, char* wifiPassword);
       bool checkWifiConnection();
       void setDebug(bool trueFalse);
+      void setServer(String domain,String port);
+      void setAntaresCse(String nameAntaresCse);
+      void setAntaresId(String nameAntaresId);
 
     private:
       void printDebug(String text);
       String ipToString(IPAddress ip);
       String _accessKey;
-      String _server = SERVER;
-      String _port = PORT;
+      String _server = "http://platform.antares.id";
+      String _port = "8080";
+      String _antaresCse = "antares-cse";
+      String _antaresId = "antares-id";
       char* _wifiSSID;
       char* _wifiPass;
       bool _debug=false;
