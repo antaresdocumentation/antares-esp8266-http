@@ -1,5 +1,5 @@
 # Antares ESP8266 HTTP  
-![Antares Logo](https://antares.id/assets/img/logo.png)
+<img src="https://antares.id/assets/img/logo.png" width="300">  
 This is the documentation for Antares ESP8266 library.  
 
 ## Installation  
