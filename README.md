@@ -4,6 +4,8 @@ This is the documentation for Antares ESP8266 library.
 
 This library is meant to simplify the process of retrieving and deploying data to Antares IoT Platform's REST API using ESP8266.  
 
+For dependencies, this library uses [bblanchon's ArduinoJson](https://github.com/bblanchon/ArduinoJson) and is already included in the bundle.    
+
 For more information regarding the platform itself, please visit Antares' [official website](https://antares.id/).
 
 ## Installation  
