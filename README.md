@@ -13,12 +13,14 @@ For more information regarding the platform itself, please visit Antares' [offic
 Add this library into Arduino IDE to use it (Sketch>Include Library>Add .ZIP Library...	)  
 
 ## Features (Available in Examples) 
-* Store data 
-* Retrieve latest data
-* Retrieve all data
-* Retrieve all project devices
-* Create a project device
+* ### AntaresCreateDevice
+Deploy a device in a project 
+* **AntaresGetAllData** - Fetch all data stored in a project device  
+* **AntaresGetAllDevice** - Fetch all devices recorded in a project  
+* **AntaresGetLatestData** - Fetch the latest data stored in a project device  
+* **AntaresStoreData** - Deploy data into a project device  
 
 <img src="https://upload.wikimedia.org/wikipedia/id/thumb/c/c4/Telkom_Indonesia_2013.svg/1200px-Telkom_Indonesia_2013.svg.png" width="200">  
 
-**Powered by Telkom Indonesia**
+**Powered by Telkom Indonesia**  
+
