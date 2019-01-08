@@ -31,7 +31,7 @@ void loop() {
   String temp = dataJson["Temperature"];
   String hum = dataJson["Humidity"];
   Serial.print("Temperature: ");
-  Serial.print(temp);
+  Serial.println(temp);
   Serial.print(", Humidity: ");
   Serial.println(hum);
   delay(10000);
