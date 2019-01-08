@@ -1,0 +1,32 @@
+#######################################
+# Syntax Coloring Map
+#######################################
+
+#######################################
+# Classes (KEYWORD1)
+#######################################
+Antares	KEYWORD1
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+setDebug	KEYWORD2
+setServer	KEYWORD2
+setAntaresCse	KEYWORD2
+setAntaresId	KEYWORD2
+ipToString	KEYWORD2
+wifiConnection	KEYWORD2
+createDevice	KEYWORD2
+retrieveAllDevice	KEYWORD2
+storeData	KEYWORD2
+retrieveAllData	KEYWORD2
+retrieveLatestData	KEYWORD2
+checkWifiConnection	KEYWORD2
+
+
+######################################
+# Constants (LITERAL1)
+#######################################
+ACCESSKEY	LITERAL1
+WIFISSID	LITERAL1
+PASSWORD	LITERAL1
