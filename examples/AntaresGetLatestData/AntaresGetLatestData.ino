@@ -32,7 +32,7 @@ void loop() {
   String hum = dataJson["Humidity"];
   Serial.print("Temperature: ");
   Serial.println(temp);
-  Serial.print(", Humidity: ");
+  Serial.print("Humidity: ");
   Serial.println(hum);
   delay(10000);
 }
