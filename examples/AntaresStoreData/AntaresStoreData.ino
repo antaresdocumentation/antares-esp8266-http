@@ -1,11 +1,11 @@
 #include "AntaresESPHTTP.h"
 
-#define ACCESSKEY "b4e89ce2436b9d90:202c7b14b849c084"
-#define WIFISSID "LAB IOT 2"
-#define PASSWORD "labiot2018"
+#define ACCESSKEY "your-access-key"
+#define WIFISSID "your-wifi-ssid"
+#define PASSWORD "your-wifi-password"
 
-String projectName = "weather-station";
-String deviceName = "station1";
+String projectName = "your-project-name";
+String deviceName = "your-device-name";
 
 Antares antares(ACCESSKEY);
 
