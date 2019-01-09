@@ -1,11 +1,11 @@
 #include "AntaresESPHTTP.h"
 
-#define ACCESSKEY "your-access-key"
-#define WIFISSID "your-wifi-ssid"
-#define PASSWORD "your-wifi-password"
+#define ACCESSKEY "b4e89ce2436b9d90:202c7b14b849c084"
+#define WIFISSID "LAB IOT 2"
+#define PASSWORD "labiot2018"
 
-String projectName = "your-project-name";
-String deviceName = "your-device-name";
+String projectName = "weather-station";
+String deviceName = "station1";
 
 Antares antares(ACCESSKEY);
 
@@ -19,19 +19,17 @@ Antares antares(ACCESSKEY);
 */
 void setup() {
   Serial.begin(115200);
+  antares.begin();
   antares.setDebug(true);
   antares.wifiConnection(WIFISSID,PASSWORD);
 }
 
 void loop() {
-  int sizeData = 2; 
-  String dataName[sizeData],dataValue[sizeData];
-  dataName[0] = "Temperature";
-  dataName[1] = "Humidity";
-  
-  dataValue[0] = (String)random(50,100);
-  dataValue[1] = (String)random(50,100);
-  Serial.println(antares.storeData(projectName, deviceName, dataName, dataValue, sizeData));
+  int temp = random(25,30) ;
+  int hum = random(75,90);
+  antares.push("Temperature", temp);
+  antares.push("Humidity", hum);
+  antares.store(projectName, deviceName);
   delay(10000);
 }
 

@@ -66,6 +66,68 @@ String Antares::retrieveAllDevice(String projectName,int limit){
   return "[ANTARES] Error";
 }
 
+void Antares::store(String projectName, String deviceName) {
+    jsonPool.printTo(jsonString); // Convert json object into string
+    printDebug(jsonString);
+
+    HTTPClient http;
+    String Uri = _server+":" + _port + "/~/"+_antaresCse+"/"+_antaresId+"/"+projectName+"/"+deviceName;
+  	printDebug("\n[ANTARES] CONNECT TO "+Uri+"...\n");
+    http.begin(Uri);
+    http.addHeader("Content-Type", "application/xml;ty=4");
+    http.addHeader("X-M2M-Origin", _accessKey);
+    String body;
+    body += "<m2m:cin xmlns:m2m=\"http://www.onem2m.org/xml/protocols\"><cnf>message</cnf><con>";
+    body += jsonString;
+    body += "</con></m2m:cin>\n";
+
+    printDebug("[ANTARES] POST...\n");
+    printDebug("[ANTARES] " + body +"\n");
+  	int httpCode = http.POST(body);
+  	if(httpCode > 0) {
+  		printDebug("[ANTARES] RESPONSE CODE : " +(String) httpCode+"\n");
+  		if(httpCode == HTTP_CODE_OK) {
+  			String payload = http.getString();
+  			printDebug(payload);
+  		}
+  	} else {
+  		printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");
+  	}
+    jsonString = ""; // Empty the json string
+  	http.end();
+}
+
+void Antares::begin() {
+    JsonObject& jsonPool = jsonBuffer.createObject();
+}
+
+// Overloadded function: String
+void Antares::push(String key, String value) {
+    jsonPool[key] = value;
+}
+
+// Overloadded function: int
+void Antares::push(String key, int value) {
+    jsonPool[key] = value;
+}
+
+// Overloadded function: float
+void Antares::push(String key, float value) {
+    jsonPool[key] = value;
+}
+
+// Overloadded function: double
+void Antares::push(String key, double value) {
+    jsonPool[key] = value;
+}
+
+void Antares::printPool() {
+    jsonPool.printTo(jsonString);
+    Serial.println(jsonString);
+    // jsonBuffer.clear();
+    jsonString = "";
+}
+
 String Antares::storeData(String projectName, String deviceName, String nameData[], String valueData[], int sizeParameter){
 	HTTPClient http;
   String Uri = _server+":" + _port + "/~/"+_antaresCse+"/"+_antaresId+"/"+projectName+"/"+deviceName;
