@@ -19,7 +19,6 @@ Antares antares(ACCESSKEY);
 */
 void setup() {
   Serial.begin(115200);
-  antares.begin();
   antares.setDebug(true);
   antares.wifiConnection(WIFISSID,PASSWORD);
 }

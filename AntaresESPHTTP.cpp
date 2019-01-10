@@ -100,8 +100,6 @@ void Antares::store(String projectName, String deviceName) {
   		printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");
   	}
     jsonString = ""; // Empty the json string
-    jsonBuffer.clear();
-    JsonObject& jsonPool = jsonBuffer.createObject();
   	http.end();
 }
 
