@@ -11,11 +11,6 @@ Antares antares(ACCESSKEY);
 
 /*
   This code will fetch the latest data from your antares project device.
-  Your Antares project device must have a structure like this:
-  {
-    "Temperature": "some-value",
-    "Humidity": "some-value"
-  }
   For more information visit https://antares.id/id/docs.html
 */
 
@@ -27,14 +22,6 @@ void setup() {
 }
 
 void loop() {
-  JsonObject& dataJson = antares.retrieveLatestData(projectName, deviceName);
-  String temp = dataJson["Temperature"];
-  String hum = dataJson["Humidity"];
-  Serial.print("Temperature: ");
-  Serial.println(temp);
-  Serial.print("Humidity: ");
-  Serial.println(hum);
+  antares.retrieveLatestData(projectName, deviceName);
   delay(10000);
 }
-
- 
