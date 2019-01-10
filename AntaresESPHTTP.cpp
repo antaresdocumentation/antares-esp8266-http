@@ -127,7 +127,7 @@ String Antares::retrieveAllData(String projectName, String deviceName,int limit)
   return "[ANTARES] Error";
 }
 
-JsonObject& Antares::retrieveLatestData(String projectName, String deviceName){
+String Antares::retrieveLatestData(String projectName, String deviceName){
   HTTPClient http;
   printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
 
@@ -140,14 +140,7 @@ JsonObject& Antares::retrieveLatestData(String projectName, String deviceName){
       printDebug("[ANTARES] RESPONSE CODE : " +(String) httpCode+"\n");
       if(httpCode == HTTP_CODE_OK) {
           String payload = http.getString();
-          jsonBuffer.clear();
-          JsonObject& payloadJson = jsonBuffer.parseObject(payload);
-          String dataString = payloadJson["m2m:cin"]["con"];
-          printDebug(dataString);
-          Serial.println();
-          jsonBuffer.clear();
-          JsonObject& dataJson = jsonBuffer.parseObject(dataString);
-          return dataJson;
+          printDebug(payload);
       }
   } else {
       printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");

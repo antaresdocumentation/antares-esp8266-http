@@ -15,7 +15,7 @@ class Antares
       String retrieveAllDevice(String projectName,int limit=0);
       String storeData(String projectName, String deviceName, String nameData[], String valueData[], int sizeParameter);
       String retrieveAllData(String projectName, String deviceName,int limit=0);
-      JsonObject& retrieveLatestData(String projectName, String deviceName);
+      String retrieveLatestData(String projectName, String deviceName);
       bool wifiConnection(char* SSID, char* wifiPassword);
       bool checkWifiConnection();
       void setDebug(bool trueFalse);
