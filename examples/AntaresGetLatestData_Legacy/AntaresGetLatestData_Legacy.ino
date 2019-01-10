@@ -26,8 +26,6 @@ void setup() {
 }
 
 void loop() {
-  antares.getLatest(projectName, deviceName);
-  Serial.println(antares.getInt("Temperature"));
-  Serial.println(antares.getInt("Humidity"));
+  Serial.println(antares.retrieveLatestData(projectName, deviceName));
   delay(10000);
 }

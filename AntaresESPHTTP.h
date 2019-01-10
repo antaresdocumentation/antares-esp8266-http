@@ -13,7 +13,6 @@ class Antares
       String retrieveAllDevice(String projectName,int limit=0);
       String storeData(String projectName, String deviceName, String nameData[], String valueData[], int sizeParameter);
       void begin(); // Initiate JSON buffer
-
       /*
         Overloaded functions start
         Antares::push()
@@ -27,26 +26,24 @@ class Antares
       void push(String key, float value);
       void push(String key, double value);
       /* Overloaded functions end */
-
       void store(String projectName, String deviceName); // Store data in buffer to database
       void printPool(); // Print data to serial monitor
       void end();  // Clear JSON buffer
       String retrieveAllData(String projectName, String deviceName,int limit=0);
-      JsonObject& retrieveLatestData(String projectName, String deviceName);
+      String retrieveLatestData(String projectName, String deviceName);
       void getLatest(String projectName, String deviceName);
-
+      void getLatestTest(String projectName, String deviceName);
       /*
         Antares::get() functions
 
         These functions are meant to fetch data from the
         JSON buffer.
       */
-      String getString();
-      int getInt();
-      double getDouble();
-      float getFloat();
+      String getString(String key);
+      int getInt(String key);
+      float getFloat(String key);
+      double getDouble(String key);
       /* Overloaded functions end */
-
       bool wifiConnection(String SSID, String wifiPassword);
       bool checkWifiConnection();
       void setDebug(bool trueFalse);
@@ -68,9 +65,12 @@ class Antares
       char* _wifiPass;
       bool _debug=false;
       char* tempDebug;
-      StaticJsonBuffer<10000> jsonBuffer;
+      StaticJsonBuffer<5000> jsonBuffer;
+      StaticJsonBuffer<5000> jsonGetBuffer;
       JsonObject& jsonPool = jsonBuffer.createObject();
+      JsonObject* jsonGetPool;
       String jsonString;
+      String jsonGetString;
 };
 
 #endif

@@ -10,15 +10,13 @@ String deviceName = "your-device-name";
 Antares antares(ACCESSKEY);
 
 /*
-  This code will fetch the latest data from your antares project device.
-  Your Antares project device must have a structure like this:
+  This code will deploy data to your Antares project device with the following structure:
   {
-    "Temperature": "some-value",
-    "Humidity": "some-value"
+    "Temperature": "random-value",
+    "Humidity": "random-value"
   }
   For more information visit https://antares.id/id/docs.html
 */
-
 void setup() {
   Serial.begin(115200);
   antares.setDebug(true);
@@ -26,8 +24,13 @@ void setup() {
 }
 
 void loop() {
-  antares.getLatest(projectName, deviceName);
-  Serial.println(antares.getInt("Temperature"));
-  Serial.println(antares.getInt("Humidity"));
+  int sizeData = 2; 
+  String dataName[sizeData],dataValue[sizeData];
+  dataName[0] = "Temperature";
+  dataName[1] = "Humidity";
+  
+  dataValue[0] = (String)random(50,100);
+  dataValue[1] = (String)random(50,100);
+  Serial.println(antares.storeData(projectName, deviceName, dataName, dataValue, sizeData));
   delay(10000);
 }
