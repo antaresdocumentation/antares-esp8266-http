@@ -1,7 +1,6 @@
 #ifndef AntaresESPHTTP_H
 #define AntaresESPHTTP_H
 #include <Arduino.h>
-#include <WiFiClient.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
@@ -17,6 +16,7 @@ class Antares
 
       /*
         Overloaded functions start
+        Antares::push()
 
         These functions are meant to push data into the
         initiated JSON buffer (created in
@@ -33,7 +33,21 @@ class Antares
       void end();  // Clear JSON buffer
       String retrieveAllData(String projectName, String deviceName,int limit=0);
       JsonObject& retrieveLatestData(String projectName, String deviceName);
-      bool wifiConnection(char* SSID, char* wifiPassword);
+      void getLatest(String projectName, String deviceName);
+
+      /*
+        Antares::get() functions
+
+        These functions are meant to fetch data from the
+        JSON buffer.
+      */
+      String getString();
+      int getInt();
+      double getDouble();
+      float getFloat();
+      /* Overloaded functions end */
+
+      bool wifiConnection(String SSID, String wifiPassword);
       bool checkWifiConnection();
       void setDebug(bool trueFalse);
       void setServer(String domain,String port);
@@ -46,6 +60,7 @@ class Antares
       String _accessKey;
       String _server = "http://platform.antares.id";
       String _port = "8080";
+      uint16_t _portNum = 8080;
       String _antaresCse = "antares-cse";
       String _antaresId = "antares-id";
       char* _wifiSSID;
