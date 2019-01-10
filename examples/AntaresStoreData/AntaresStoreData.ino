@@ -31,5 +31,3 @@ void loop() {
   antares.store(projectName, deviceName);
   delay(10000);
 }
-
- 

@@ -53,6 +53,7 @@ class Antares
       void setServer(String domain,String port);
       void setAntaresCse(String nameAntaresCse);
       void setAntaresId(String nameAntaresId);
+      void measureSize();
 
     private:
       void printDebug(String text);

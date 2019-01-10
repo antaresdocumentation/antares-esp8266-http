@@ -100,6 +100,8 @@ void Antares::store(String projectName, String deviceName) {
   		printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");
   	}
     jsonString = ""; // Empty the json string
+    jsonBuffer.clear();
+    JsonObject& jsonPool = jsonBuffer.createObject();
   	http.end();
 }
 
@@ -225,6 +227,8 @@ JsonObject& Antares::retrieveLatestData(String projectName, String deviceName){
   } else {
       printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");
   }
+
+
   http.end();
   // return "[ANTARES] Error";
 }
@@ -305,4 +309,15 @@ String Antares::ipToString(IPAddress ip){
   for (int i=0; i<4; i++)
     s += i  ? "." + String(ip[i]) : String(ip[i]);
   return s;
+}
+
+void Antares::measureSize() {
+    size_t len = jsonPool.measureLength();
+    size_t size = len + 1;
+
+    Serial.print("Pool size: ");
+    Serial.println(size);
+
+    Serial.print("Buffer size: ");
+    Serial.println(jsonBuffer.size());
 }
