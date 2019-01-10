@@ -72,7 +72,10 @@ String Antares::retrieveAllDevice(String projectName,int limit){
 
 void Antares::store(String projectName, String deviceName) {
     jsonPool.printTo(jsonString); // Convert json object into string
+
+    printDebug("\n[ANTARES] ");
     printDebug(jsonString);
+    printDebug("\n");
 
     HTTPClient http;
     WiFiClient client;
