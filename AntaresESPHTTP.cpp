@@ -140,7 +140,7 @@ String Antares::retrieveLatestData(String projectName, String deviceName){
       printDebug("[ANTARES] RESPONSE CODE : " +(String) httpCode+"\n");
       if(httpCode == HTTP_CODE_OK) {
           String payload = http.getString();
-          printDebug(payload);
+          return payload;
       }
   } else {
       printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");

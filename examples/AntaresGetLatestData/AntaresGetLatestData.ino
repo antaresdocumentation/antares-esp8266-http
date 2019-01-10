@@ -22,6 +22,6 @@ void setup() {
 }
 
 void loop() {
-  antares.retrieveLatestData(projectName, deviceName);
+  Serial.println(antares.retrieveLatestData(projectName, deviceName));
   delay(10000);
 }
