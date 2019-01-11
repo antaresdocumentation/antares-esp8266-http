@@ -21,17 +21,18 @@ class Antares
         initiated JSON buffer (created in
         the begin() function)
       */
-      void push(String key, String value);
-      void push(String key, int value);
-      void push(String key, float value);
-      void push(String key, double value);
+      void add(String key, String value);
+      void add(String key, int value);
+      void add(String key, float value);
+      void add(String key, double value);
       /* Overloaded functions end */
-      void store(String projectName, String deviceName); // Store data in buffer to database
+      void send(String projectName, String deviceName); // Store data in buffer to database
       void printPool(); // Print data to serial monitor
       void end();  // Clear JSON buffer
       String retrieveAllData(String projectName, String deviceName,int limit=0);
       String retrieveLatestData(String projectName, String deviceName);
-      void getLatest(String projectName, String deviceName);
+      void get(String projectName, String deviceName);
+      void getTest(String projectName, String deviceName);
       void getLatestTest(String projectName, String deviceName);
       /*
         Antares::get() functions
@@ -50,13 +51,15 @@ class Antares
       void setServer(String domain,String port);
       void setAntaresCse(String nameAntaresCse);
       void setAntaresId(String nameAntaresId);
-      void measureSize();
 
+      void measureSize();
+      void measureGetSize();
     private:
       void printDebug(String text);
       String ipToString(IPAddress ip);
       String _accessKey;
       String _server = "http://platform.antares.id";
+      String _serverNoHttp = "platform.antares.id";
       String _port = "8080";
       uint16_t _portNum = 8080;
       String _antaresCse = "antares-cse";
@@ -68,7 +71,6 @@ class Antares
       StaticJsonBuffer<5000> jsonBuffer;
       StaticJsonBuffer<5000> jsonGetBuffer;
       JsonObject& jsonPool = jsonBuffer.createObject();
-      JsonObject* jsonGetPool;
       String jsonString;
       String jsonGetString;
 };

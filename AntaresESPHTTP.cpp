@@ -70,7 +70,7 @@ String Antares::retrieveAllDevice(String projectName,int limit){
   return "[ANTARES] Error";
 }
 
-void Antares::store(String projectName, String deviceName) {
+void Antares::send(String projectName, String deviceName) {
     jsonPool.printTo(jsonString); // Convert json object into string
 
     printDebug("\n[ANTARES] ");
@@ -113,22 +113,22 @@ void Antares::begin() {
 }
 
 // Overloadded function: String
-void Antares::push(String key, String value) {
+void Antares::add(String key, String value) {
     jsonPool[key] = value;
 }
 
 // Overloadded function: int
-void Antares::push(String key, int value) {
+void Antares::add(String key, int value) {
     jsonPool[key] = value;
 }
 
 // Overloadded function: float
-void Antares::push(String key, float value) {
+void Antares::add(String key, float value) {
     jsonPool[key] = value;
 }
 
 // Overloadded function: double
-void Antares::push(String key, double value) {
+void Antares::add(String key, double value) {
     jsonPool[key] = value;
 }
 
@@ -139,16 +139,17 @@ void Antares::printPool() {
     jsonString = "";
 }
 
-void Antares::getLatest(String projectName, String deviceName) {
+void Antares::get(String projectName, String deviceName) {
     HTTPClient http;
     WiFiClient client;
+
 
     jsonGetString = "";
 
     printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
 
     http.begin(_server+":" + _port + "/~/"+_antaresCse+"/"+_antaresId+"/"+projectName+"/"+deviceName+"/la"); //HTTP
-    http.addHeader("Content-Type", "application/json");
+    http.addHeader("Content-Type", "application/json;ty=4");
     http.addHeader("X-M2M-Origin", _accessKey);
     printDebug("[ANTARES] GET...\n");
     int httpCode = http.GET();
@@ -157,19 +158,70 @@ void Antares::getLatest(String projectName, String deviceName) {
         if(httpCode == HTTP_CODE_OK) {
             String payload = http.getString();
             JsonObject& payloadJson = jsonGetBuffer.parseObject(payload);
-            jsonBuffer.clear();
+            jsonGetBuffer.clear();
             String dataString = payloadJson["m2m:cin"]["con"];
             JsonObject& jsonGetPool = jsonGetBuffer.parseObject(dataString);
             jsonGetPool.printTo(jsonGetString);
+            jsonGetBuffer.clear();
             Serial.println(jsonGetString);
         }
     } else {
         printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");
     }
-
-
     http.end();
     // return "[ANTARES] Error";
+}
+
+void Antares::getTest(String projectName, String deviceName) {
+    WiFiClient client;
+
+    if(!client.connect(_serverNoHttp, _portNum)) {
+        printDebug("[ANTARES] Connection failed!\n");
+    }
+    else {
+        printDebug("[ANTARES] Connection successful!\n");
+        String url = "/~/" + _antaresCse + "/" + _antaresId + "/" + projectName + "/" + deviceName + "/" + "la";
+        printDebug("[ANTARES] Fetching data from" + url + "\n");
+
+        String request = (String("GET ") + url + " HTTP/1.1\r\n" +
+                     "Host: " + _serverNoHttp + ":8080\r\n" +
+                     "Content-Type: application/json;ty=4\r\n" +
+                     "X-M2M-Origin: " + _accessKey + "\r\n" +
+                     "Accept: application/json" + "\r\n" +
+                     "Connection: close\r\n\r\n"
+                 );
+        printDebug(request);
+        client.print(request);
+        unsigned long timeout = millis();
+        while(client.available() == 0) {
+            if(millis() - timeout > 5000) {
+                printDebug("[ANTARES] Timeout!");
+                client.stop();
+                return;
+            }
+        }
+
+        while(client.available()) {
+            if(client.read() == '{') {
+                String payload = "{";
+                payload += client.readStringUntil('\r');
+                JsonObject& payloadJson = jsonGetBuffer.parseObject(payload);
+                String jsonGetString = payloadJson["m2m:cin"]["con"];
+                jsonGetBuffer.clear();
+                Serial.println(jsonGetString);
+                // String dataString = payloadJson["m2m:cin"]["con"];
+                // JsonObject& jsonGetPool = jsonGetBuffer.parseObject(dataString);
+                // jsonGetPool.printTo(jsonGetString);
+                // jsonBuffer.clear();
+                // Serial.println(jsonGetString);
+                // printDebug(line);
+                client.stop();
+                client.flush();
+            }
+        }
+
+        printDebug("\n[ANTARES] Closing connection...");
+    }
 }
 
 void Antares::getLatestTest(String projectName, String deviceName) {
@@ -386,6 +438,11 @@ void Antares::measureSize() {
     Serial.print("Pool size: ");
     Serial.println(size);
 
+    Serial.print("Buffer size: ");
+    Serial.println(jsonBuffer.size());
+}
+
+void Antares::measureGetSize() {
     Serial.print("Buffer size: ");
     Serial.println(jsonBuffer.size());
 }
