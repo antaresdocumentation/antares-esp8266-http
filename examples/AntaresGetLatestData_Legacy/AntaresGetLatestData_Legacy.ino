@@ -1,14 +1,3 @@
-#include "AntaresESPHTTP.h"
-
-#define ACCESSKEY "your-access-key"
-#define WIFISSID "your-wifi-ssid"
-#define PASSWORD "your-wifi-password"
-
-String projectName = "your-project-name";
-String deviceName = "your-device-name";
-
-Antares antares(ACCESSKEY);
-
 /*
   This code will fetch the latest data from your antares project device.
   Your Antares project device must have a structure like this:
@@ -16,8 +5,19 @@ Antares antares(ACCESSKEY);
     "Temperature": "some-value",
     "Humidity": "some-value"
   }
-  For more information visit https://antares.id/id/docs.html
+  For more information please visit https://antares.id/id/docs.html
 */
+
+#include "AntaresESPHTTP.h"
+
+#define ACCESSKEY "your-access-key"
+#define WIFISSID "your-wifi-ssid"
+#define PASSWORD "your-wifi-password"
+
+#define projectName "your-project-name"
+#define deviceName "your-device-name"
+
+Antares antares(ACCESSKEY);
 
 void setup() {
   Serial.begin(115200);

@@ -332,7 +332,7 @@ bool Antares::wifiConnection(String SSID, String wifiPassword) {
     _wifiPass = wifiPasswordChar;
 
     WiFi.begin(_wifiSSID, _wifiPass);
-    printDebug("\n[ANTARES] WIFI CONNECTING");
+    printDebug("[ANTARES] Trying to connect to " + SSID + "...\n");
 
     for (count=0;count<20;count++)
     {
@@ -342,16 +342,14 @@ bool Antares::wifiConnection(String SSID, String wifiPassword) {
 
     if (WiFi.status() != WL_CONNECTED)
     {
-      printDebug("[ANTARES] Cannot Connect " + (String) _wifiSSID);
+      printDebug("[ANTARES] Could not connect to " + SSID + ".\n");
       return false;
     }
     else
     {
       WiFi.setAutoReconnect(true);
-      printDebug("\n[ANTARES] WIFI CONNECTED\n");
-      printDebug("[ANTARES] IP ADDRESS: ");
-      printDebug(ipToString(WiFi.localIP()));
-      printDebug("\n");
+      printDebug("\n[ANTARES] WiFi Connected!\n");
+      printDebug("[ANTARES] IP Address: " + ipToString(WiFi.localIP()) + "\n");
       return true;
     }
 

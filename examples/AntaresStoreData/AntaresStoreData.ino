@@ -17,8 +17,8 @@
 #define WIFISSID "your-wifi-ssid"
 #define PASSWORD "your-wifi-password"
 
-String projectName = "your-project-name";
-String deviceName = "your-device-name";
+#define projectName "your-project-name"
+#define deviceName "your-device-name"
 
 Antares antares(ACCESSKEY);
 

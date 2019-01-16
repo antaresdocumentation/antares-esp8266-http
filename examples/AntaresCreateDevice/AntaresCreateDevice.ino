@@ -1,17 +1,17 @@
+/*
+  This code creates a new device to your Antares project.
+  For more information please visit https://antares.id/id/docs.html
+*/
+
 #include "AntaresESPHTTP.h"
 
 #define ACCESSKEY "your-access-key"
 #define WIFISSID "your-wifi-ssid"
 #define PASSWORD "your-wifi-password"
 
-String projectName = "your-project-name";
+#define projectName "your-project-name"
 
 Antares antares(ACCESSKEY);
-
-/*
-  This code will create a device to your Antares project.
-  For more information visit https://antares.id/id/docs.html
-*/
 
 void setup() {
   Serial.begin(115200);
