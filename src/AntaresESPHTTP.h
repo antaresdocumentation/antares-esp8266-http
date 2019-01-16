@@ -27,7 +27,8 @@ class Antares
       void add(String key, double value);
       /* Overloaded functions end */
       void send(String projectName, String deviceName); // Store data in buffer to database
-      void printPool(); // Print data to serial monitor
+      void printSend(); // Print data waiting list to serial monitor
+      void printGet(); // Print received data to serial monitor
       void end();  // Clear JSON buffer
       String retrieveAllData(String projectName, String deviceName,int limit=0);
       String retrieveLatestData(String projectName, String deviceName);
@@ -68,10 +69,7 @@ class Antares
       char* _wifiPass;
       bool _debug=false;
       char* tempDebug;
-      StaticJsonBuffer<5000> jsonBuffer;
-      StaticJsonBuffer<5000> jsonGetBuffer;
-      JsonObject& jsonPool = jsonBuffer.createObject();
-      String jsonString;
+      String jsonString = "{}";
       String jsonGetString;
 };
 

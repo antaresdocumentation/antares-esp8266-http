@@ -43,6 +43,7 @@ String Antares::retrieveAllDevice(String projectName,int limit){
 	HTTPClient http;
     WiFiClient client;
 
+    DynamicJsonBuffer jsonBuffer;
 	printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
   String Limit="";
   if (limit!=0) Limit = "&lim="+(String)limit;
@@ -71,7 +72,6 @@ String Antares::retrieveAllDevice(String projectName,int limit){
 }
 
 void Antares::send(String projectName, String deviceName) {
-    jsonPool.printTo(jsonString); // Convert json object into string
 
     printDebug("\n[ANTARES] ");
     printDebug(jsonString);
@@ -102,49 +102,64 @@ void Antares::send(String projectName, String deviceName) {
   	} else {
   		printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");
   	}
-    jsonString = ""; // Empty the json string
-    jsonBuffer.clear();
-    JsonObject& jsonPool = jsonBuffer.createObject();
+    jsonString = "{}"; // Empty the json string
   	http.end();
-}
-
-void Antares::begin() {
-    JsonObject& jsonPool = jsonBuffer.createObject();
 }
 
 // Overloadded function: String
 void Antares::add(String key, String value) {
-    jsonPool[key] = value;
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonString);
+    object[key] = value;
+    String newInsert;
+    object.printTo(newInsert);
+    jsonString =  newInsert;
 }
 
 // Overloadded function: int
 void Antares::add(String key, int value) {
-    jsonPool[key] = value;
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonString);
+    object[key] = value;
+    String newInsert;
+    object.printTo(newInsert);
+    jsonString =  newInsert;
 }
 
 // Overloadded function: float
 void Antares::add(String key, float value) {
-    jsonPool[key] = value;
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonString);
+    object[key] = value;
+    String newInsert;
+    object.printTo(newInsert);
+    jsonString =  newInsert;
 }
 
 // Overloadded function: double
 void Antares::add(String key, double value) {
-    jsonPool[key] = value;
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonString);
+    object[key] = value;
+    String newInsert;
+    object.printTo(newInsert);
+    jsonString =  newInsert;
 }
 
-void Antares::printPool() {
-    jsonPool.printTo(jsonString);
-    Serial.println(jsonString);
-    // jsonBuffer.clear();
-    jsonString = "";
+void Antares::printSend() {
+    printDebug(jsonString);
+}
+
+void Antares::printGet() {
+    printDebug(jsonGetString);
 }
 
 void Antares::get(String projectName, String deviceName) {
     HTTPClient http;
     WiFiClient client;
 
-
     jsonGetString = "";
+    DynamicJsonBuffer jsonBufferTest;
 
     printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
 
@@ -157,12 +172,10 @@ void Antares::get(String projectName, String deviceName) {
         printDebug("[ANTARES] RESPONSE CODE : " +(String) httpCode+"\n");
         if(httpCode == HTTP_CODE_OK) {
             String payload = http.getString();
-            JsonObject& payloadJson = jsonGetBuffer.parseObject(payload);
-            jsonGetBuffer.clear();
+            JsonObject& payloadJson = jsonBufferTest.parseObject(payload);
             String dataString = payloadJson["m2m:cin"]["con"];
-            JsonObject& jsonGetPool = jsonGetBuffer.parseObject(dataString);
+            JsonObject& jsonGetPool = jsonBufferTest.parseObject(dataString);
             jsonGetPool.printTo(jsonGetString);
-            jsonGetBuffer.clear();
             Serial.println(jsonGetString);
         }
     } else {
@@ -170,58 +183,6 @@ void Antares::get(String projectName, String deviceName) {
     }
     http.end();
     // return "[ANTARES] Error";
-}
-
-void Antares::getTest(String projectName, String deviceName) {
-    WiFiClient client;
-
-    if(!client.connect(_serverNoHttp, _portNum)) {
-        printDebug("[ANTARES] Connection failed!\n");
-    }
-    else {
-        printDebug("[ANTARES] Connection successful!\n");
-        String url = "/~/" + _antaresCse + "/" + _antaresId + "/" + projectName + "/" + deviceName + "/" + "la";
-        printDebug("[ANTARES] Fetching data from" + url + "\n");
-
-        String request = (String("GET ") + url + " HTTP/1.1\r\n" +
-                     "Host: " + _serverNoHttp + ":8080\r\n" +
-                     "Content-Type: application/json;ty=4\r\n" +
-                     "X-M2M-Origin: " + _accessKey + "\r\n" +
-                     "Accept: application/json" + "\r\n" +
-                     "Connection: close\r\n\r\n"
-                 );
-        printDebug(request);
-        client.print(request);
-        unsigned long timeout = millis();
-        while(client.available() == 0) {
-            if(millis() - timeout > 5000) {
-                printDebug("[ANTARES] Timeout!");
-                client.stop();
-                return;
-            }
-        }
-
-        while(client.available()) {
-            if(client.read() == '{') {
-                String payload = "{";
-                payload += client.readStringUntil('\r');
-                JsonObject& payloadJson = jsonGetBuffer.parseObject(payload);
-                String jsonGetString = payloadJson["m2m:cin"]["con"];
-                jsonGetBuffer.clear();
-                Serial.println(jsonGetString);
-                // String dataString = payloadJson["m2m:cin"]["con"];
-                // JsonObject& jsonGetPool = jsonGetBuffer.parseObject(dataString);
-                // jsonGetPool.printTo(jsonGetString);
-                // jsonBuffer.clear();
-                // Serial.println(jsonGetString);
-                // printDebug(line);
-                client.stop();
-                client.flush();
-            }
-        }
-
-        printDebug("\n[ANTARES] Closing connection...");
-    }
 }
 
 void Antares::getLatestTest(String projectName, String deviceName) {
@@ -240,30 +201,30 @@ void Antares::getLatestTest(String projectName, String deviceName) {
 }
 
 String Antares::getString(String key) {
+    DynamicJsonBuffer jsonBuffer;
     JsonObject& object = jsonBuffer.parseObject(jsonGetString);
     String value = object[key];
-    jsonBuffer.clear();
     return value;
 }
 
 int Antares::getInt(String key) {
+    DynamicJsonBuffer jsonBuffer;
     JsonObject& object = jsonBuffer.parseObject(jsonGetString);
     int value = object[key];
-    jsonBuffer.clear();
     return value;
 }
 
 float Antares::getFloat(String key) {
+    DynamicJsonBuffer jsonBuffer;
     JsonObject& object = jsonBuffer.parseObject(jsonGetString);
     float value = object[key];
-    jsonBuffer.clear();
     return value;
 }
 
 double Antares::getDouble(String key) {
+    DynamicJsonBuffer jsonBuffer;
     JsonObject& object = jsonBuffer.parseObject(jsonGetString);
     double value = object[key];
-    jsonBuffer.clear();
     return value;
 }
 
@@ -303,6 +264,8 @@ String Antares::storeData(String projectName, String deviceName, String nameData
 String Antares::retrieveAllData(String projectName, String deviceName,int limit){
   HTTPClient http;
   WiFiClient client;
+
+  DynamicJsonBuffer jsonBuffer;
 
   printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
   String Limit="";
@@ -429,20 +392,4 @@ String Antares::ipToString(IPAddress ip){
   for (int i=0; i<4; i++)
     s += i  ? "." + String(ip[i]) : String(ip[i]);
   return s;
-}
-
-void Antares::measureSize() {
-    size_t len = jsonPool.measureLength();
-    size_t size = len + 1;
-
-    Serial.print("Pool size: ");
-    Serial.println(size);
-
-    Serial.print("Buffer size: ");
-    Serial.println(jsonBuffer.size());
-}
-
-void Antares::measureGetSize() {
-    Serial.print("Buffer size: ");
-    Serial.println(jsonBuffer.size());
 }
