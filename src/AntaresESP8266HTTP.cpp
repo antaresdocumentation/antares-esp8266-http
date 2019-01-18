@@ -196,7 +196,7 @@ void AntaresESP8266HTTP::get(String projectName, String deviceName) {
 
             if(_debug) {
                 Serial.println("\n[ANTARES] JSON GET:\n");
-                jsonGetPool.prettyPrintTo(Serial);
+                jsonGetPool.printTo(Serial);
                 Serial.println("\n");
             }
         }
