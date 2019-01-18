@@ -1,6 +1,5 @@
 /*
   This code will fetch the latest data from your antares project device.
-<<<<<<< HEAD
   Your Antares project device must have a structure like this:
   {
     "temperature": some-integer,
@@ -11,9 +10,6 @@
     "longitude": "some-string"
   }
   For more information please visit https://antares.id/id/docs.html
-=======
-  For more information visit https://antares.id/id/docs.html
->>>>>>> fb45a030c8547cde204b3b9d260750a9dcfec159
 */
 
 #include "AntaresESP8266HTTP.h"
@@ -34,7 +30,6 @@ void setup() {
 }
 
 void loop() {
-<<<<<<< HEAD
   // Store latest value in buffer
   antares.get(projectName, deviceName);
 
@@ -53,8 +48,5 @@ void loop() {
   Serial.println("Rain level: " + String(rainlv));
   Serial.println("Latitude: " + lat);
   Serial.println("Longitude: " + lon);
-=======
-  Serial.println(antares.retrieveLatestData(projectName, deviceName));
->>>>>>> fb45a030c8547cde204b3b9d260750a9dcfec159
   delay(10000);
 }
