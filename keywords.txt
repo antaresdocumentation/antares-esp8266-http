@@ -5,7 +5,7 @@
 #######################################
 # Classes (KEYWORD1)
 #######################################
-Antares	KEYWORD1
+AntaresESP8266HTTP	KEYWORD1
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
@@ -25,7 +25,7 @@ checkWifiConnection	KEYWORD2
 begin	KEYWORD2
 push	KEYWORD2
 store	KEYWORD2
-printPool	KEYWORD2
+printData	KEYWORD2
 end	KEYWORD2
 
 

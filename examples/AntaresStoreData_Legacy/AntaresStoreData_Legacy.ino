@@ -7,7 +7,7 @@
   For more information please visit https://antares.id/id/docs.html
 */
 
-#include "AntaresESPHTTP.h"
+#include "AntaresESP8266HTTP.h"
 
 #define ACCESSKEY "your-access-key"
 #define WIFISSID "your-wifi-ssid"
@@ -16,7 +16,7 @@
 #define projectName "your-project-name"
 #define deviceName "your-device-name"
 
-Antares antares(ACCESSKEY);
+AntaresESP8266HTTP antares(ACCESSKEY);
 
 void setup() {
   Serial.begin(115200);
@@ -25,11 +25,11 @@ void setup() {
 }
 
 void loop() {
-  int sizeData = 2; 
+  int sizeData = 2;
   String dataName[sizeData],dataValue[sizeData];
   dataName[0] = "Temperature";
   dataName[1] = "Humidity";
-  
+
   dataValue[0] = (String)random(50,100);
   dataValue[1] = (String)random(50,100);
   Serial.println(antares.storeData(projectName, deviceName, dataName, dataValue, sizeData));

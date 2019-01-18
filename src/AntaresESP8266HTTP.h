@@ -1,14 +1,14 @@
-#ifndef AntaresESPHTTP_H
-#define AntaresESPHTTP_H
+#ifndef AntaresESP8266PHTTP_H
+#define AntaresESP8266HTTP_H
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <ArduinoJson.h>
 
-class Antares
+class AntaresESP8266HTTP
 {
     public:
-      Antares(String accessKey);
+      AntaresESP8266HTTP(String accessKey);
       String createDevice(String projectName, String deviceName);
       String retrieveAllDevice(String projectName,int limit=0);
       String storeData(String projectName, String deviceName, String nameData[], String valueData[], int sizeParameter);
@@ -27,8 +27,7 @@ class Antares
       void add(String key, double value);
       /* Overloaded functions end */
       void send(String projectName, String deviceName); // Store data in buffer to database
-      void printSend(); // Print data waiting list to serial monitor
-      void printGet(); // Print received data to serial monitor
+      void printData(); // Print waiting list data to serial monitor
       void end();  // Clear JSON buffer
       String retrieveAllData(String projectName, String deviceName,int limit=0);
       String retrieveLatestData(String projectName, String deviceName);

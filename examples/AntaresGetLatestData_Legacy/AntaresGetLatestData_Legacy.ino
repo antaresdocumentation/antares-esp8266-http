@@ -8,7 +8,7 @@
   For more information please visit https://antares.id/id/docs.html
 */
 
-#include "AntaresESPHTTP.h"
+#include "AntaresESP8266HTTP.h"
 
 #define ACCESSKEY "your-access-key"
 #define WIFISSID "your-wifi-ssid"
@@ -17,7 +17,7 @@
 #define projectName "your-project-name"
 #define deviceName "your-device-name"
 
-Antares antares(ACCESSKEY);
+AntaresESP8266HTTP antares(ACCESSKEY);
 
 void setup() {
   Serial.begin(115200);
