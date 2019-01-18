@@ -1,5 +1,5 @@
 # Antares ESP8266 HTTP  
-<img src="https://antares.id/assets/img/logo.png" width="300">  
+<img src="http://i64.tinypic.com/2gsmuxc.jpg" width="300">  
 This is the documentation for Antares ESP8266 library.  
 
 This library is meant to simplify the process of retrieving and deploying data to Antares IoT Platform's REST API using ESP8266.  
