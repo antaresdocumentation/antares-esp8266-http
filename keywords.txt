@@ -27,6 +27,7 @@ push	KEYWORD2
 store	KEYWORD2
 printData	KEYWORD2
 end	KEYWORD2
+add	KEYWORD2
 
 
 ######################################
