@@ -175,6 +175,7 @@ void AntaresESP8266HTTP::get(String projectName, String deviceName) {
     HTTPClient http;
     WiFiClient client;
 
+    _getSuccess = false;
     jsonGetString = "";
     DynamicJsonBuffer jsonBufferTest;
 
@@ -199,12 +200,17 @@ void AntaresESP8266HTTP::get(String projectName, String deviceName) {
                 jsonGetPool.printTo(Serial);
                 Serial.println("\n");
             }
+            _getSuccess = true;
         }
     } else {
         printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");
     }
     http.end();
     // return "[ANTARES] Error";
+}
+
+bool AntaresESP8266HTTP::getSuccess() {
+    return _getSuccess;
 }
 
 void AntaresESP8266HTTP::getLatestTest(String projectName, String deviceName) {

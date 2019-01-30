@@ -45,6 +45,7 @@ class AntaresESP8266HTTP
       float getFloat(String key);
       double getDouble(String key);
       /* Overloaded functions end */
+      bool getSuccess();
       bool wifiConnection(String SSID, String wifiPassword);
       bool checkWifiConnection();
       void setDebug(bool trueFalse);
@@ -67,6 +68,7 @@ class AntaresESP8266HTTP
       char* _wifiSSID;
       char* _wifiPass;
       bool _debug=false;
+      bool _getSuccess=false;
       char* tempDebug;
       String jsonString = "{}";
       String jsonGetString;

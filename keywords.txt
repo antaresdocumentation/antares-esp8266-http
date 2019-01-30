@@ -34,6 +34,7 @@ getInt	KEYWORD2
 getString	KEYWORD2
 getFloat	KEYWORD2
 getDouble	KEYWORD2
+getSuccess	KEYWORD2
 
 ######################################
 # Constants (LITERAL1)

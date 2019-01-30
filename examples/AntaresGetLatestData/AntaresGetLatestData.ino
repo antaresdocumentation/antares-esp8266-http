@@ -33,20 +33,23 @@ void loop() {
   // Store latest value in buffer
   antares.get(projectName, deviceName);
 
-  // Get each values
-  int temp = antares.getInt("temperature");
-  int hum = antares.getInt("humidity");
-  float windsp = antares.getFloat("wind_speed");
-  float rainlv = antares.getFloat("rain_level");
-  String lat = antares.getString("latitude");
-  String lon = antares.getString("longitude");
+  // Check if we're actually getting data
+  if(antares.getSuccess()) {
+    // Get each values
+    int temp = antares.getInt("temperature");
+    int hum = antares.getInt("humidity");
+    float windsp = antares.getFloat("wind_speed");
+    float rainlv = antares.getFloat("rain_level");
+    String lat = antares.getString("latitude");
+    String lon = antares.getString("longitude");
 
-  // Print each values
-  Serial.println("Temperature: " + String(temp));
-  Serial.println("Humidity: " + String(hum));
-  Serial.println("Wind speed: " + String(windsp));
-  Serial.println("Rain level: " + String(rainlv));
-  Serial.println("Latitude: " + lat);
-  Serial.println("Longitude: " + lon);
+    // Print each values
+    Serial.println("Temperature: " + String(temp));
+    Serial.println("Humidity: " + String(hum));
+    Serial.println("Wind speed: " + String(windsp));
+    Serial.println("Rain level: " + String(rainlv));
+    Serial.println("Latitude: " + lat);
+    Serial.println("Longitude: " + lon);
+  }
   delay(10000);
 }
