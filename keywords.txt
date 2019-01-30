@@ -26,9 +26,14 @@ begin	KEYWORD2
 push	KEYWORD2
 store	KEYWORD2
 printData	KEYWORD2
+get	KEYWORD2
 end	KEYWORD2
 add	KEYWORD2
-
+send	KEYWORD2
+getInt	KEYWORD2
+getString	KEYWORD2
+getFloat	KEYWORD2
+getDouble	KEYWORD2
 
 ######################################
 # Constants (LITERAL1)
