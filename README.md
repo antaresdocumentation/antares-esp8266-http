@@ -35,42 +35,43 @@ All methods and properties need to be insantiated in order to use them.
 The constructor of class `AntaresESP8266HTTP`. Put your Antares account access key as the parameter. The access key should be an Arduino `String` datatype.
 
 ### Get Latest Data
-* `void get(String projectName, String deviceName)`
+* `void get(String projectName, String deviceName)`  
 **(Not recommended)** Fetch the latest data from your Antares project device through HTTP port 8080 (non-secure).   
 The data will be stored in the `jsonGetString` property of class `AntaresESP8266HTTP`
-* `void getSecure(String projectName, String deviceName)`
+* `void getSecure(String projectName, String deviceName)`  
 **(Recommended)** Fetch the latest data from your Antares project device through HTTPS port 8443 (secure).   
 The data will be stored in the `jsonGetString` property of class `AntaresESP8266HTTP`
-* `String getString(String key)`
+* `String getString(String key)`  
 Get `String` data by accessing the JSON `key` from `jsonGetString`.
-* `int getInt(String key)`
+* `int getInt(String key)`  
 Get `int` data by accessing the JSON `key` from `jsonGetString`.
-* `float getFloat(String key)`
+* `float getFloat(String key)`  
 * Get `float` data by accessing the JSON `key` from `jsonGetString`.
-* `double  getDouble(String key)`
+* `double  getDouble(String key)`  
 Get `double` data by accessing the JSON `key` from `jsonGetString`.
+
 ### Store Data
-* `void add(String key, value)`
+* `void add(String key, value)`  
 Insert a JSON key-value data to the property `jsonString` of class `AntaresESP8266HTTP`. The `value` parameter is overloaded. The supported data types for the value parameter are:
     * `String`
     * `int`
     * `float`
     * `double`
-* `void send(String projectName, String deviceName)`  
+* `void send(String projectName, String deviceName)`    
 **(Not recommended)** Send the data stored in `jsonString` property of class `AntaresESP8266HTTP` through HTTP port 8080 (non-secure).
-* `void sendSecure(String projectName, String deviceName)`
+* `void sendSecure(String projectName, String deviceName)`  
 **(Recommended)** Send the data stored in `jsonString` property of class `AntaresESP8266HTTP` through HTTPS port 8443 (secure).
 
 ### Create Device
-* `String createDevice(String projectName, String deviceName)`
+* `String createDevice(String projectName, String deviceName)`  
 **(Non-secure)** Create a device in your Antares project.
 
 ### Get All Data ID
-* `String retrieveAllData(String projectName, String deviceName, int limit=0)`
+* `String retrieveAllData(String projectName, String deviceName, int limit=0)`  
 **(Non-secure)** Get all data ID in your Antares project. Specify the `limit` parameter if you want to limit the amount of data ID.
 
 ### Get All Device ID
-* `String retrieveAllDevice(String projectName, int limit=0)`
+* `String retrieveAllDevice(String projectName, int limit=0)`  
 **(Non-secure)** Get all device ID in your Antares project. Specify the `limit` parameter if you want to limit the amount of device ID.
 
 <img src="https://upload.wikimedia.org/wikipedia/id/thumb/c/c4/Telkom_Indonesia_2013.svg/1200px-Telkom_Indonesia_2013.svg.png" width="200">  
