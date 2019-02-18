@@ -53,7 +53,7 @@ Get `String` data by accessing the JSON `key` from `jsonGetString`.
 Get `int` data by accessing the JSON `key` from `jsonGetString`.  
 
 * `float getFloat(String key)`  
-* Get `float` data by accessing the JSON `key` from `jsonGetString`.  
+Get `float` data by accessing the JSON `key` from `jsonGetString`.  
 
 * `double  getDouble(String key)`  
 Get `double` data by accessing the JSON `key` from `jsonGetString`.  
