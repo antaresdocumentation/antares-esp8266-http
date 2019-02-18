@@ -46,6 +46,6 @@ void loop() {
   antares.add("longitude", lon);
 
   // Send from buffer to Antares
-  antares.send(projectName, deviceName);
-  delay(10000);
+  antares.sendSecure(projectName, deviceName);
+  delay(5000);
 }

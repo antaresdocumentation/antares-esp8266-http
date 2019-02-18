@@ -209,6 +209,253 @@ void AntaresESP8266HTTP::get(String projectName, String deviceName) {
     // return "[ANTARES] Error";
 }
 
+void AntaresESP8266HTTP::getSecure(String projectName, String deviceName) {
+    WiFiClientSecure client;
+    _getSuccess = false;
+    jsonGetString = "";
+    // Load root certificate in DER format into WiFiClientSecure object
+    bool res = client.setCACert_P(caCert, caCertLen);
+
+    if (!res) {
+        printDebug("[ANTARES] Failed to load root CA certificate!\n");
+        while (true) {
+            yield();
+        }
+    }
+    else {
+        printDebug("[ANTARES] Loading root CA certificate success!\n");
+    }
+
+    // Connect to remote server
+    printDebug("[ANTARES] connecting to " + String(_serverNoHttp) + "\n");
+    if (!client.connect(_serverNoHttp, _portSecureNum)) {
+        printDebug("[ANTARES] connection failed\n");
+        return;
+    }
+
+    // Verify validity of server's certificate
+    if (client.verifyCertChain(_serverNoHttp)) {
+        printDebug("[ANTARES] Server certificate verified\n");
+    } else {
+        printDebug("[ANTARES] ERROR: certificate verification failed!\n");
+        return;
+    }
+
+    String url = "/~/antares-cse/antares-id/"+ projectName +"/" + deviceName + "/la";
+    printDebug("[ANTARES] requesting URL: " + url + "\n");
+
+    client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+               "Host: " + _serverNoHttp + "\r\n" +
+               "X-M2M-Origin: " + _accessKey + "\r\n" +
+               "Content-Type: application/json;ty=4\r\n" +
+               "Accept: application/json\r\n" +
+    //               "User-Agent: BuildFailureDetectorESP8266\r\n" +
+               "Connection: close\r\n\r\n");
+
+    Serial.println("[ANTARES] request sent\n");
+    unsigned long timeout = millis();
+    while (client.available() == 0) {
+        if (millis() - timeout > 5000) {
+            printDebug("[ANTARES] Client Timeout !\n");
+            client.stop();
+            return;
+        }
+    }
+
+    while (client.connected()) {
+        String line = "";
+        while(client.read() != '{');
+        line += "{";
+        line += client.readStringUntil('\r');
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& payloadJson = jsonBuffer.parseObject(line);
+        String dataString = payloadJson["m2m:cin"]["con"];
+        JsonObject& jsonGetPool = jsonBuffer.parseObject(dataString);
+        jsonGetPool.printTo(jsonGetString);
+
+        if(_debug) {
+            jsonGetPool.prettyPrintTo(Serial);
+            printDebug("\n");
+        }
+    }
+    _getSuccess = true;
+}
+
+void AntaresESP8266HTTP::getNonSecure(String projectName, String deviceName) {
+    WiFiClient client;
+    _getSuccess = false;
+    jsonGetString = "";
+    // Connect to remote server
+    printDebug("[ANTARES] connecting to " + String(_serverNoHttp) + "\n");
+    if (!client.connect("platform.antares.id", 8080)) {
+        printDebug("[ANTARES] connection failed\n");
+        return;
+    }
+
+    String url = "/~/antares-cse/antares-id/"+ projectName +"/" + deviceName + "/la";
+    printDebug("[ANTARES] requesting URL: " + url + "\n");
+
+    client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+               "Host: " + _serverNoHttp + "\r\n" +
+               "X-M2M-Origin: " + _accessKey + "\r\n" +
+               "Content-Type: application/json;ty=4\r\n" +
+               "Accept: application/json\r\n" +
+    //               "User-Agent: BuildFailureDetectorESP8266\r\n" +
+               "Connection: close\r\n\r\n");
+
+    Serial.println("[ANTARES] request sent\n");
+    unsigned long timeout = millis();
+    while (client.available() == 0) {
+        if (millis() - timeout > 5000) {
+            printDebug("[ANTARES] Client Timeout !\n");
+            client.stop();
+            return;
+        }
+    }
+
+    while (client.connected()) {
+        String line = "";
+        while(client.read() != '{');
+        line += "{";
+        line += client.readStringUntil('\r');
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& payloadJson = jsonBuffer.parseObject(line);
+        String dataString = payloadJson["m2m:cin"]["con"];
+        JsonObject& jsonGetPool = jsonBuffer.parseObject(dataString);
+        jsonGetPool.printTo(jsonGetString);
+
+        if(_debug) {
+            jsonGetPool.prettyPrintTo(Serial);
+            printDebug("\n");
+        }
+    }
+    _getSuccess = true;
+}
+
+void AntaresESP8266HTTP::sendSecure(String projectName, String deviceName) {
+    WiFiClientSecure client;
+    // Load root certificate in DER format into WiFiClientSecure object
+    bool res = client.setCACert_P(caCert, caCertLen);
+
+    if (!res) {
+        printDebug("[ANTARES] Failed to load root CA certificate!\n");
+        while (true) {
+            yield();
+        }
+    }
+    else {
+        printDebug("[ANTARES] Loading root CA certificate success!\n");
+    }
+
+    // Connect to remote server
+    printDebug("[ANTARES] connecting to " + String(_serverNoHttp) + "\n");
+    if (!client.connect(_serverNoHttp, _portSecureNum)) {
+        printDebug("[ANTARES] connection failed\n");
+        return;
+    }
+
+    // Verify validity of server's certificate
+    if (client.verifyCertChain(_serverNoHttp)) {
+        printDebug("[ANTARES] Server certificate verified\n");
+    } else {
+        printDebug("[ANTARES] ERROR: certificate verification failed!\n");
+        return;
+    }
+
+    String url = "/~/antares-cse/antares-id/"+ projectName +"/" + deviceName;
+    printDebug("[ANTARES] requesting URL: " + url + "\n");
+
+    jsonString.replace("\"", "\\\"");
+
+    // Create JSON with Antares format
+    String body;
+    body += "{";
+    body += "\"m2m:cin\":{";
+    body += "\"con\":\"" + jsonString + "\"";
+    body += "}";
+    body += "}";
+
+    const uint16_t bodyLength = body.length();
+
+    client.print(String("POST ") + url + " HTTP/1.1\r\n" +
+               "Host: " + _serverNoHttp + "\r\n" +
+               "X-M2M-Origin: " + _accessKey + "\r\n" +
+               "Accept: application/json\r\n" +
+               "Connection: close\r\n" +
+               "Content-Type: application/json;ty=4\r\n" +
+               "Content-Length: " + String(bodyLength) + "\r\n\r\n" +
+               body
+           );
+
+    Serial.println("[ANTARES] request sent\n");
+    unsigned long timeout = millis();
+    while (client.available() == 0) {
+        if (millis() - timeout > 5000) {
+            printDebug("[ANTARES] Client Timeout !\n");
+            client.stop();
+            return;
+        }
+    }
+
+    while (client.connected()) {
+        String line = client.readStringUntil('\r');
+        printDebug(line + "\n");
+    }
+    jsonString = "{}";
+}
+
+void AntaresESP8266HTTP::sendNonSecure(String projectName, String deviceName) {
+    WiFiClient client;
+
+    // Connect to remote server
+    printDebug("[ANTARES] connecting to " + String(_serverNoHttp) + "\n");
+    if (!client.connect(_serverNoHttp, _portNum)) {
+        printDebug("[ANTARES] connection failed\n");
+        return;
+    }
+
+    String url = "/~/antares-cse/antares-id/"+ projectName +"/" + deviceName;
+    printDebug("[ANTARES] requesting URL: " + url + "\n");
+
+    jsonString.replace("\"", "\\\"");
+
+    // Create JSON with Antares format
+    String body;
+    body += "{";
+    body += "\"m2m:cin\":{";
+    body += "\"con\":\"" + jsonString + "\"";
+    body += "}";
+    body += "}";
+
+    const uint16_t bodyLength = body.length();
+
+    client.print(String("POST ") + url + " HTTP/1.1\r\n" +
+               "Host: " + _serverNoHttp + "\r\n" +
+               "X-M2M-Origin: " + _accessKey + "\r\n" +
+               "Accept: application/json\r\n" +
+               "Connection: close\r\n" +
+               "Content-Type: application/json;ty=4\r\n" +
+               "Content-Length: " + String(bodyLength) + "\r\n\r\n" +
+               body
+           );
+
+    Serial.println("[ANTARES] request sent\n");
+    unsigned long timeout = millis();
+    while (client.available() == 0) {
+        if (millis() - timeout > 5000) {
+            printDebug("[ANTARES] Client Timeout !\n");
+            client.stop();
+            return;
+        }
+    }
+
+    while (client.connected()) {
+        String line = client.readStringUntil('\r');
+        printDebug(line + "\n");
+    }
+    jsonString = "{}";
+}
+
 bool AntaresESP8266HTTP::getSuccess() {
     return _getSuccess;
 }
@@ -293,62 +540,62 @@ String AntaresESP8266HTTP::storeData(String projectName, String deviceName, Stri
 }
 
 String AntaresESP8266HTTP::retrieveAllData(String projectName, String deviceName,int limit){
-  HTTPClient http;
-  WiFiClient client;
+    HTTPClient http;
+    WiFiClient client;
 
-  DynamicJsonBuffer jsonBuffer;
+    DynamicJsonBuffer jsonBuffer;
 
-  printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
-  String Limit="";
-  if (limit!=0) Limit = "&lim="+(String)limit;
-  http.begin(_server+":" + _port + "/~/"+_antaresCse+"/"+_antaresId+"/"+projectName+"/"+deviceName+"?fu=1&ty=4"+Limit); //HTTP
-  http.addHeader("Content-Type", "application/json");
-  http.addHeader("X-M2M-Origin", _accessKey);
-  printDebug("[ANTARES] GET...\n");
-  int httpCode = http.GET();
-  if(httpCode > 0) {
-      printDebug("[ANTARES] RESPONSE CODE : " +(String) httpCode+"\n");
-      if(httpCode == HTTP_CODE_OK) {
-          String payload = http.getString();
-          printDebug(payload);
-          JsonObject& payloadJson = jsonBuffer.parseObject(payload);
-          payload = payloadJson["m2m:uril"].as<String>();
-          payload.replace("/antares-cse/antares-id/"+projectName+"/"+deviceName+"/","");
-          payload.replace(" ",",");
-          printDebug(payload+"\n");
-          return payload;
-      }
-  } else {
-      printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");
-  }
+    printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
+    String Limit="";
+    if (limit!=0) Limit = "&lim="+(String)limit;
+    http.begin(_server+":" + _port + "/~/"+_antaresCse+"/"+_antaresId+"/"+projectName+"/"+deviceName+"?fu=1&ty=4"+Limit); //HTTP
+    http.addHeader("Content-Type", "application/json");
+    http.addHeader("X-M2M-Origin", _accessKey);
+    printDebug("[ANTARES] GET...\n");
+    int httpCode = http.GET();
+    if(httpCode > 0) {
+        printDebug("[ANTARES] RESPONSE CODE : " +(String) httpCode+"\n");
+        if(httpCode == HTTP_CODE_OK) {
+            String payload = http.getString();
+            printDebug(payload);
+            JsonObject& payloadJson = jsonBuffer.parseObject(payload);
+            payload = payloadJson["m2m:uril"].as<String>();
+            payload.replace("/antares-cse/antares-id/"+projectName+"/"+deviceName+"/","");
+            payload.replace(" ",",");
+            printDebug(payload+"\n");
+            return payload;
+        }
+    } else {
+        printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");
+    }
 
   http.end();
   return "[ANTARES] Error";
 }
 
 String AntaresESP8266HTTP::retrieveLatestData(String projectName, String deviceName){
-  HTTPClient http;
-  WiFiClient client;
+    HTTPClient http;
+    WiFiClient client;
 
-  printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
+    printDebug("\n[ANTARES] CONNECT TO "+_server+"...\n");
 
-  http.begin(_server+":" + _port + "/~/"+_antaresCse+"/"+_antaresId+"/"+projectName+"/"+deviceName+"/la"); //HTTP
-  http.addHeader("Content-Type", "application/json");
-  http.addHeader("X-M2M-Origin", _accessKey);
-  printDebug("[ANTARES] GET...\n");
-  int httpCode = http.GET();
-  if(httpCode > 0) {
+    http.begin(_server+":" + _port + "/~/"+_antaresCse+"/"+_antaresId+"/"+projectName+"/"+deviceName+"/la"); //HTTP
+    http.addHeader("Content-Type", "application/json");
+    http.addHeader("X-M2M-Origin", _accessKey);
+    printDebug("[ANTARES] GET...\n");
+    int httpCode = http.GET();
+    if(httpCode > 0) {
       printDebug("[ANTARES] RESPONSE CODE : " +(String) httpCode+"\n");
       if(httpCode == HTTP_CODE_OK) {
           String payload = http.getString();
           return payload;
       }
-  } else {
+    } else {
       printDebug("[ANTARES] GET... failed, error: " + (String) http.errorToString(httpCode).c_str() + "\n");
-  }
+    }
 
-  http.end();
-  // return "[ANTARES] Error";
+    http.end();
+    // return "[ANTARES] Error";
 }
 
 bool AntaresESP8266HTTP::wifiConnection(String SSID, String wifiPassword) {
@@ -378,6 +625,23 @@ bool AntaresESP8266HTTP::wifiConnection(String SSID, String wifiPassword) {
         WiFi.setAutoReconnect(true);
         printDebug("\n[ANTARES] WiFi Connected!\n");
         printDebug("[ANTARES] IP Address: " + ipToString(WiFi.localIP()) + "\n");
+
+        delay(1000);
+        printDebug("[ANTARES] Setting time using SNTP\n");
+        configTime(8 * 3600, 0, "pool.ntp.org", "time.nist.gov");
+        time_t now = time(nullptr);
+
+        while (now < 8 * 3600 * 2) {
+            delay(500);
+            Serial.print(".");
+            now = time(nullptr);
+        }
+        printDebug("\n");
+        struct tm timeinfo;
+        gmtime_r(&now, &timeinfo);
+        printDebug("Current time: ");
+        printDebug(String(asctime(&timeinfo)));
+
         return true;
     }
 }

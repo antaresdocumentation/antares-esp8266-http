@@ -31,7 +31,7 @@ void setup() {
 
 void loop() {
   // Store latest value in buffer
-  antares.get(projectName, deviceName);
+  antares.getSecure(projectName, deviceName);
 
   // Check if we're actually getting data
   if(antares.getSuccess()) {
