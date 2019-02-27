@@ -16,6 +16,8 @@ For more information regarding the platform itself, please visit Antares' [offic
 2. Add this library into Arduino IDE (Sketch > Include Library > Add .ZIP Library...)  
 
 ## Examples
+Please note that `AntaresStoreSecure` and `AntaresGetLatestSecure` are preferred than `AntaresStoreData` and `AntaresGetLatestSecure` because they use HTTPS (port 8443) rather than HTTP (port 8080).  
+
 * **AntaresCreateDevice** - Deploy a device into a project  
 * **AntaresGetAllData** - Fetch all data stored in a project device  
 * **AntaresGetAllDevice** - Fetch all devices recorded in a project  
