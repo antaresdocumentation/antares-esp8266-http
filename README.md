@@ -48,16 +48,16 @@ The data will be stored in the `jsonGetString` property of class `AntaresESP8266
 * `void getSuccess()`  
 Check if the latest data is successfully received.
 
-* `String getString(String key)` or `String getString(String key, String key2)` or   
+* `String getString(String key)` or `String getString(String key, String key2)`     
 Get `String` data by accessing the JSON `key` from `jsonGetString`.  
 
-* `int getInt(String key)` or `int getInt(String key, String key2)`
+* `int getInt(String key)` or `int getInt(String key, String key2)`  
 Get `int` data by accessing the JSON `key` from `jsonGetString`.  
 
-* `float getFloat(String key)` or `float getFloat(String key, String key2)`
+* `float getFloat(String key)` or `float getFloat(String key, String key2)`  
 Get `float` data by accessing the JSON `key` from `jsonGetString`.  
 
-* `double getDouble(String key)` or `double getDouble(String key, String key2)`
+* `double getDouble(String key)` or `double getDouble(String key, String key2)`  
 Get `double` data by accessing the JSON `key` from `jsonGetString`.  
 
 ### Store Data
