@@ -6,7 +6,7 @@ This library is meant to simplify the process of retrieving and deploying data t
 
 This library has been tested with Arduino ESP8266 version 2.5.0.
 
-For dependencies, this library uses [bblanchon's ArduinoJson](https://github.com/bblanchon/ArduinoJson) and is already included in the bundle.    
+For dependencies, this library uses [bblanchon's ArduinoJson v5](https://github.com/bblanchon/ArduinoJson) and is already included in the bundle.    
 
 For more information regarding the platform itself, please visit Antares' [official website](https://antares.id/).
 
@@ -28,7 +28,7 @@ Please note that `AntaresStoreSecure` and `AntaresGetLatestSecure` are preferred
 
 ## API Reference
 
-> Class `AntaresESP8266`  
+> Class `AntaresESP8266HTTP`  
 
 All methods and properties need to be insantiated in order to use them.
 
