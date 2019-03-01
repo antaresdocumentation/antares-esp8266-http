@@ -1,13 +1,16 @@
 /*
   This code will fetch the latest data from your antares project device.
   Your Antares project device must have a structure like this:
+  (Note that nesting the JSON object can only be done up to 2 levels using this library)
   {
     "temperature": some-integer,
     "humidity": some-integer,
     "wind_speed": some-float,
     "rain_level": some-float,
-    "latitude": "some-string",
-    "longitude": "some-string"
+    "location" : {
+      "latitude": "static-string",
+      "longitude": "static-string"
+    }
   }
   For more information please visit https://antares.id/id/docs.html
 */
@@ -40,8 +43,8 @@ void loop() {
     int hum = antares.getInt("humidity");
     float windsp = antares.getFloat("wind_speed");
     float rainlv = antares.getFloat("rain_level");
-    String lat = antares.getString("latitude");
-    String lon = antares.getString("longitude");
+    String lat = antares.getString("location", "latitude");
+    String lon = antares.getString("location", "longitude");
 
     // Print each values
     Serial.println("Temperature: " + String(temp));

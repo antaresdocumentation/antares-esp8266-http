@@ -1,12 +1,15 @@
 /*
   This code will deploy data to your Antares project device with the following structure:
+  (Note that nesting the JSON object can only be done up to 2 levels using this library)
   {
     "temperature": random-int,
     "humidity": random-int,
     "wind_speed": random-float,
     "rain_level": random-float,
-    "latitude": "static-string",
-    "longitude": "static-string",
+    "location" : {
+      "latitude": "static-string",
+      "longitude": "static-string"
+    }
   }
   For more information please visit https://antares.id/id/docs.html
 */
@@ -42,8 +45,8 @@ void loop() {
   antares.add("humidity", hum);
   antares.add("wind_speed", windsp);
   antares.add("rain_level", rainlv);
-  antares.add("latitude", lat);
-  antares.add("longitude", lon);
+  antares.add("location", "latitude", lat);
+  antares.add("location", "longitude", lon);
 
   // Send from buffer to Antares
   antares.sendSecure(projectName, deviceName);

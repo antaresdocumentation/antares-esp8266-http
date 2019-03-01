@@ -118,6 +118,7 @@ void AntaresESP8266HTTP::send(String projectName, String deviceName) {
   	}
 
     jsonString = "{}"; // Empty the json string
+    _currentKey = "";
   	http.end();
 }
 
@@ -159,6 +160,76 @@ void AntaresESP8266HTTP::add(String key, double value) {
     String newInsert;
     object.printTo(newInsert);
     jsonString =  newInsert;
+}
+
+// 2-level nested json start
+
+// Overloadded function: String
+void AntaresESP8266HTTP::add(String key, String key2, String value) {
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonString);
+    if(_currentKey != key) {
+        JsonObject& nested = object.createNestedObject(key);
+        nested[key2] = value;
+    }
+    else {
+        object[key][key2] = value;
+    }
+    String newInsert;
+    object.printTo(newInsert);
+    jsonString =  newInsert;
+    _currentKey = key;
+}
+
+// Overloadded function: int
+void AntaresESP8266HTTP::add(String key, String key2, int value) {
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonString);
+    if(_currentKey != key) {
+        JsonObject& nested = object.createNestedObject(key);
+        nested[key2] = value;
+    }
+    else {
+        object[key][key2] = value;
+    }
+    String newInsert;
+    object.printTo(newInsert);
+    jsonString =  newInsert;
+    _currentKey = key;
+}
+
+// Overloadded function: float
+void AntaresESP8266HTTP::add(String key, String key2, float value) {
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonString);
+    if(_currentKey != key) {
+        JsonObject& nested = object.createNestedObject(key);
+        nested[key2] = value;
+    }
+    else {
+        object[key][key2] = value;
+    }
+    String newInsert;
+    object.printTo(newInsert);
+    jsonString =  newInsert;
+    _currentKey = key;
+}
+
+// Overloadded function: double
+void AntaresESP8266HTTP::add(String key, String key2, double value) {
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonString);
+    if(_currentKey != key) {
+        JsonObject& nested = object.createNestedObject(key);
+        nested[key2] = value;
+    }
+    else {
+        object[key][key2] = value;
+    }
+    String newInsert;
+    object.printTo(newInsert);
+    jsonString =  newInsert;
+    _currentKey = key;
 }
 
 void AntaresESP8266HTTP::printData() {
@@ -402,6 +473,7 @@ void AntaresESP8266HTTP::sendSecure(String projectName, String deviceName) {
         printDebug(line + "\n");
     }
     jsonString = "{}";
+    _currentKey = "";
 }
 
 void AntaresESP8266HTTP::sendNonSecure(String projectName, String deviceName) {
@@ -482,10 +554,24 @@ String AntaresESP8266HTTP::getString(String key) {
     return value;
 }
 
+String AntaresESP8266HTTP::getString(String key, String key2) {
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonGetString);
+    String value = object[key][key2];
+    return value;
+}
+
 int AntaresESP8266HTTP::getInt(String key) {
     DynamicJsonBuffer jsonBuffer;
     JsonObject& object = jsonBuffer.parseObject(jsonGetString);
     int value = object[key];
+    return value;
+}
+
+int AntaresESP8266HTTP::getInt(String key, String key2) {
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonGetString);
+    int value = object[key][key2];
     return value;
 }
 
@@ -496,10 +582,24 @@ float AntaresESP8266HTTP::getFloat(String key) {
     return value;
 }
 
+float AntaresESP8266HTTP::getFloat(String key, String key2) {
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonGetString);
+    float value = object[key][key2];
+    return value;
+}
+
 double AntaresESP8266HTTP::getDouble(String key) {
     DynamicJsonBuffer jsonBuffer;
     JsonObject& object = jsonBuffer.parseObject(jsonGetString);
     double value = object[key];
+    return value;
+}
+
+double AntaresESP8266HTTP::getDouble(String key, String key2) {
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& object = jsonBuffer.parseObject(jsonGetString);
+    double value = object[key][key2];
     return value;
 }
 

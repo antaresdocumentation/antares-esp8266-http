@@ -107,6 +107,13 @@ class AntaresESP8266HTTP
       void add(String key, int value);
       void add(String key, float value);
       void add(String key, double value);
+
+      // 2-level nested json
+      void add(String key, String key2, String value);
+      void add(String key, String key2, int value);
+      void add(String key, String key2, float value);
+      void add(String key, String key2, double value);
+
       /* Overloaded functions end */
       void send(String projectName, String deviceName); // Store data in buffer to database
       void printData(); // Print waiting list data to serial monitor
@@ -130,6 +137,14 @@ class AntaresESP8266HTTP
       int getInt(String key);
       float getFloat(String key);
       double getDouble(String key);
+
+      // 2-level nested json
+
+      String getString(String key, String key2);
+      int getInt(String key, String key2);
+      float getFloat(String key, String key2);
+      double getDouble(String key, String key2);
+
       /* Overloaded functions end */
       bool getSuccess();
       bool wifiConnection(String SSID, String wifiPassword);
@@ -161,6 +176,7 @@ class AntaresESP8266HTTP
       char* tempDebug;
       String jsonString = "{}";
       String jsonGetString;
+      String _currentKey;
 };
 
 #endif

@@ -13,7 +13,7 @@ For more information regarding the platform itself, please visit Antares' [offic
 ## Installation  
 **Arduino IDE** <img src="https://camo.githubusercontent.com/647cefc4a331bc5ab2a760d3c731b9d0b3f1259b/68747470733a2f2f7777772e61726475696e6f2e63632f66617669636f6e2e69636f" width="20">  
 1. Install ESP8266 Core for Arduino. For more information please refer to the ESP8266 Core for Arduino's [installation manual](https://github.com/esp8266/Arduino#installing-with-boards-manager)
-2. Add this library into Arduino IDE (Sketch > Include Library > Add .ZIP Library...)  
+2. Download the latest release and add this library into Arduino IDE (Sketch > Include Library > Add .ZIP Library...)  
 
 ## Examples
 Please note that `AntaresStoreSecure` and `AntaresGetLatestSecure` are preferred than `AntaresStoreData` and `AntaresGetLatestSecure` because they use HTTPS (port 8443) rather than HTTP (port 8080).  
@@ -48,20 +48,20 @@ The data will be stored in the `jsonGetString` property of class `AntaresESP8266
 * `void getSuccess()`  
 Check if the latest data is successfully received.
 
-* `String getString(String key)`  
+* `String getString(String key)` or `String getString(String key, String key2)` or   
 Get `String` data by accessing the JSON `key` from `jsonGetString`.  
 
-* `int getInt(String key)`  
+* `int getInt(String key)` or `int getInt(String key, String key2)`
 Get `int` data by accessing the JSON `key` from `jsonGetString`.  
 
-* `float getFloat(String key)`  
+* `float getFloat(String key)` or `float getFloat(String key, String key2)`
 Get `float` data by accessing the JSON `key` from `jsonGetString`.  
 
-* `double  getDouble(String key)`  
+* `double getDouble(String key)` or `double getDouble(String key, String key2)`
 Get `double` data by accessing the JSON `key` from `jsonGetString`.  
 
 ### Store Data
-* `void add(String key, value)`  
+* `void add(String key, value)` or `void add(String key, String key2, value)`   
 Insert a JSON key-value data to the property `jsonString` of class `AntaresESP8266HTTP`. The `value` parameter is overloaded. The supported data types for the value parameter are:
     * `String`
     * `int`
