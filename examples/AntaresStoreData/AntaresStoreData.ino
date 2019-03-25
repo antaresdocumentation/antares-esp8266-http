@@ -50,5 +50,10 @@ void loop() {
 
   // Send from buffer to Antares
   antares.send(projectName, deviceName);
+  /*
+    Uncomment the line below to use HTTP instead of HTTPS.
+    Will be faster, but less secure
+  */
+  // antares.sendNonSecure(projectName, deviceName); 
   delay(10000);
 }

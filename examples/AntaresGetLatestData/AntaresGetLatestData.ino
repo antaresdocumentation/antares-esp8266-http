@@ -17,12 +17,12 @@
 
 #include "AntaresESP8266HTTP.h"
 
-#define ACCESSKEY "your-access-key"
-#define WIFISSID "your-wifi-ssid"
-#define PASSWORD "your-wifi-password"
+#define ACCESSKEY "b4e89ce2436b9d90:202c7b14b849c084"
+#define WIFISSID "LAB IOT 3"
+#define PASSWORD "labiot2018"
 
-#define projectName "your-project-name"
-#define deviceName "your-device-name"
+#define projectName "weather-station"
+#define deviceName "station1"
 
 AntaresESP8266HTTP antares(ACCESSKEY);
 
@@ -33,26 +33,30 @@ void setup() {
 }
 
 void loop() {
-  // Store latest value in buffer
-  antares.get(projectName, deviceName);
+  antares.get(projectName, deviceName); // Store latest value in buffer
+  /*
+    Uncomment the line below to use HTTP instead of HTTPS.
+    Will be faster, but less secure
+  */
+  // antares.getNonSecure(projectName, deviceName);
 
-  // Check if we're actually getting data
-  if(antares.getSuccess()) {
-    // Get each values
-    int temp = antares.getInt("temperature");
-    int hum = antares.getInt("humidity");
-    float windsp = antares.getFloat("wind_speed");
-    float rainlv = antares.getFloat("rain_level");
-    String lat = antares.getString("location", "latitude");
-    String lon = antares.getString("location", "longitude");
+ //  Check if we're actually getting data
+ if(antares.getSuccess()) {
+   // Get each values
+   int temp = antares.getInt("temperature");
+   int hum = antares.getInt("humidity");
+   float windsp = antares.getFloat("wind_speed");
+   float rainlv = antares.getFloat("rain_level");
+   String lat = antares.getString("location", "latitude");
+   String lon = antares.getString("location", "longitude");
 
-    // Print each values
-    Serial.println("Temperature: " + String(temp));
-    Serial.println("Humidity: " + String(hum));
-    Serial.println("Wind speed: " + String(windsp));
-    Serial.println("Rain level: " + String(rainlv));
-    Serial.println("Latitude: " + lat);
-    Serial.println("Longitude: " + lon);
-  }
-  delay(10000);
+   // Print each values
+   Serial.println("Temperature: " + String(temp));
+   Serial.println("Humidity: " + String(hum));
+   Serial.println("Wind speed: " + String(windsp));
+   Serial.println("Rain level: " + String(rainlv));
+   Serial.println("Latitude: " + lat);
+   Serial.println("Longitude: " + lon);
+ }
+ delay(10000);
 }

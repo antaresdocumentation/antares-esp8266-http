@@ -1,4 +1,8 @@
 /*
+  ============================= WARNING ================================
+  This example is not recommended as it uses port 8080 (non-secure HTTP)
+  for connecting to Antares.
+  ============================= WARNING ================================
   This code will fetch the latest data from your antares project device.
   Your Antares project device must have a structure like this:
   {

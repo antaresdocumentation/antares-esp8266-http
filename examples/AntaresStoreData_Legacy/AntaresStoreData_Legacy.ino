@@ -1,4 +1,8 @@
 /*
+  ============================= WARNING ================================
+  This example is not recommended as it uses port 8080 (non-secure HTTP)
+  for connecting to Antares.
+  ============================= WARNING ================================
   This code deploys data to your Antares project device with the following structure:
   {
     "Temperature": "random-value",
