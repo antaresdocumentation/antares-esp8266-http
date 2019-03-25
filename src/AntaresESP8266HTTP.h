@@ -5,7 +5,7 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <WiFiClientSecure.h>
-#include <ArduinoJsonv5.h>
+#include <ArduinoJson.h>
 
 // CA certificates
 static const unsigned char caCert[] PROGMEM = {
