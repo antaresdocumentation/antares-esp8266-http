@@ -29,7 +29,10 @@ AntaresESP8266HTTP antares(ACCESSKEY);
 void setup() {
   Serial.begin(115200);
   antares.setDebug(true);
-  antares.wifiConnection(WIFISSID,PASSWORD);
+  antares.wifiConnection(WIFISSID,PASSWORD)
+  /* Use wifiConnectionNonSecure instead if you don't want to use HTTPS
+   * and avoid SNTP matching */
+  //antares.wifiConnectionNonSecure(WIFISSID,PASSWORD);
 }
 
 void loop() {

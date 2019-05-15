@@ -150,6 +150,7 @@ class AntaresESP8266HTTP
       /* Overloaded functions end */
       bool getSuccess();
       bool wifiConnection(String SSID, String wifiPassword);
+      bool wifiConnectionNonSecure(String SSID, String wifiPassword);
       bool checkWifiConnection();
       void setDebug(bool trueFalse);
       void setServer(String domain,String port);

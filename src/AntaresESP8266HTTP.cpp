@@ -899,6 +899,42 @@ bool AntaresESP8266HTTP::wifiConnection(String SSID, String wifiPassword) {
     return true;
 }
 
+bool AntaresESP8266HTTP::wifiConnectionNonSecure(String SSID, String wifiPassword) {
+    char ssidChar[sizeof(SSID)];
+    char wifiPasswordChar[sizeof(SSID)];
+
+    SSID.toCharArray(ssidChar, sizeof(SSID));
+    wifiPassword.toCharArray(wifiPasswordChar, sizeof(wifiPassword));
+
+    int count=0;
+    _wifiSSID = ssidChar;
+    _wifiPass = wifiPasswordChar;
+
+    WiFi.begin(_wifiSSID, _wifiPass);
+    printDebug("[ANTARES] Trying to connect to " + SSID + "...\n");
+
+    // for (count=0;count<20;count++) {
+    //     delay(500);
+    //     printDebug(".");
+    // }
+
+    int counter = 0;
+    while(WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        printDebug(".");
+        counter++;
+        if(counter >= 10) {
+            counter = 0;
+            printDebug("[ANTARES] Could not connect to " + SSID + "! Retrying...\n");
+        }
+    }
+
+    WiFi.setAutoReconnect(true);
+    printDebug("\n[ANTARES] WiFi Connected!\n");
+    printDebug("[ANTARES] IP Address: " + ipToString(WiFi.localIP()) + "\n");
+    return true;
+}
+
 bool AntaresESP8266HTTP::checkWifiConnection() {
     if(WiFi.status() != WL_CONNECTED) {
         printDebug("[ANTARES] WIFI RECONNECT...");
