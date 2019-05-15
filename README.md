@@ -36,12 +36,20 @@ All methods and properties need to be insantiated in order to use them.
 * `AntaresESP8266HTTP(String ACCESSKEY)`
 The constructor of class `AntaresESP8266HTTP`. Put your Antares account access key as the parameter. The access key should be an Arduino `String` datatype.
 
+### Connect to WiFi (Secure)
+* `void wifiConnection(String projectName, String deviceName)`  
+Connect to WiFi with SNTP matching in order to match with antares' CA Certificate for HTTPS connection (port 8443 in Antares).  
+
+### Connect to WiFi (Non-secure)
+* `void wifiConnectionNonSecure(String projectName, String deviceName)`  
+Connect to WiFi without SNTP matching. Use this if you don't want to use HTTP (port 8080 in Antares) instead of HTTPS.
+
 ### Get Latest Data
-* `void get(String projectName, String deviceName)`  
+* `void getNonSecure(String projectName, String deviceName)`  
 **(Not recommended)** Fetch the latest data from your Antares project device through HTTP port 8080 (non-secure).   
 The data will be stored in the `jsonGetString` property of class `AntaresESP8266HTTP`  
 
-* `void getSecure(String projectName, String deviceName)`  
+* `void get(String projectName, String deviceName)`  
 **(Recommended)** Fetch the latest data from your Antares project device through HTTPS port 8443 (secure).   
 The data will be stored in the `jsonGetString` property of class `AntaresESP8266HTTP`  
 
@@ -68,10 +76,10 @@ Insert a JSON key-value data to the property `jsonString` of class `AntaresESP82
     * `float`
     * `double`  
 
-* `void send(String projectName, String deviceName)`    
+* `void sendNonSecure(String projectName, String deviceName)`    
 **(Not recommended)** Send the data stored in `jsonString` property of class `AntaresESP8266HTTP` through HTTP port 8080 (non-secure).  
 
-* `void sendSecure(String projectName, String deviceName)`  
+* `void send(String projectName, String deviceName)`  
 **(Recommended)** Send the data stored in `jsonString` property of class `AntaresESP8266HTTP` through HTTPS port 8443 (secure).  
 
 ### Create Device
